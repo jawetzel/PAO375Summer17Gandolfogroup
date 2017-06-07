@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2016.4 (64-bit)
+# SW Build 1756540 on Mon Jan 23 19:11:23 MST 2017
+# IP Build 1755317 on Mon Jan 23 20:30:07 MST 2017
+# Start of session at: Tue Jun 06 21:24:05 2017
+# Process ID: 19308
+# Current directory: C:/PersonalData/Repos/cmps375/Labs/Lab1/Lab1Josh/Lab1Josh.runs/synth_1
+# Command line: vivado.exe -log Adder1.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source Adder1.tcl
+# Log file: C:/PersonalData/Repos/cmps375/Labs/Lab1/Lab1Josh/Lab1Josh.runs/synth_1/Adder1.vds
+# Journal file: C:/PersonalData/Repos/cmps375/Labs/Lab1/Lab1Josh/Lab1Josh.runs/synth_1\vivado.jou
+#-----------------------------------------------------------
+source Adder1.tcl -notrace

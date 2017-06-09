@@ -19,5 +19,7 @@ END Adder1;
 
 ARCHITECTURE behavioral OF Adder1 IS
 BEGIN
-    sum <= cIn XOR ( a XOR b );
+
+     -- Insert two lines (one for cOut and the other for sum) of VHDL code Here
+    
 END behavioral;

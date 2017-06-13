@@ -1,0 +1,6 @@
+---
+applications:
+- name: WatsonCallsForChatBot
+  memory: 256M
+  timeout: 80
+  BUILD_DIR: build

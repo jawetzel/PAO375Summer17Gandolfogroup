@@ -40,9 +40,7 @@ function sendImage (resolve, reject) {
 
         function getBase64EncodedImage() {
             const images = fs.readdirSync('temp').filter(file => path.extname(file) === '.jpg');
-            const imagePath = getRandomImage();
-            const image = fs.readFileSync(imagePath);
-            
+            const image = getRandomImage();
             return image;
 
             /** 
@@ -56,6 +54,8 @@ function sendImage (resolve, reject) {
             function getRandomImage() {
                 const randomIndex = Math.floor(Math.random() * images.length);
                 const imagePath = `temp/${images[randomIndex]}`;
+                const image = fs.readFileSync(imagePath);
+                return image;
             }
         }
     }

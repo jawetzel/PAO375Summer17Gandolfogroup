@@ -32,7 +32,7 @@ function sendImage (resolve, reject) {
     function getRequestConfig() {
         return {
             url: 'https://eastus2.api.cognitive.microsoft.com/face/v1.0/detect?',
-            payload: fs.readFileSync(getImage()),
+            payload: getBase64EncodedImage(),
             params: {
                 "returnFaceId": "true",
                 "returnFaceLandmarks": "false",
@@ -44,10 +44,10 @@ function sendImage (resolve, reject) {
             }
         };
 
-        function getImage() {        
+        function getBase64EncodedImage() {
             var images = fs.readdirSync('temp').filter(file => path.extname(file) === '.jpg');
-            var randomIndex = Math.floor(Math.random() * (images.length));
-            return `temp/${images[randomIndex]}`;
+            var randomIndex = Math.floor(Math.random() * images.length);
+            return fs.readFileSync(`temp/${images[randomIndex]}`);
         }
     }
 };

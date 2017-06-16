@@ -6,14 +6,13 @@ var Speech = require('./Microsoft/Speech');
 var loopCheck = function(){
     setTimeout(function(){
         console.log('checking');
-        ImageRecognition.CheckForPerson();
         loopCheck();
     }, 3000);
 };
 
 
-Speech.RecordAudio();
-//loopCheck();
+//Speech.RecordAudio();
+loopCheck();
 
 
 // to get this working you need nodeJs(https://nodejs.org/en/)

@@ -12,7 +12,8 @@ var loopCheck = function(){
 };
 
 
-loopCheck();
+Speech.RecordAudio();
+//loopCheck();
 
 
 // to get this working you need nodeJs(https://nodejs.org/en/)

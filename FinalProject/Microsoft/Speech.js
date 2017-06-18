@@ -1,86 +1,115 @@
+var mic = require('mic');
 var fs = require('fs');
-var mic = require('mic')
-var request = require('request');
-var uuid = require('node-uuid');
+var uuid = require('node-uuid'),
+    request = require('request');
+var superagent = require('superagent');
 
-var speechApiAccessToken = '';
+var SpeechToTextEndpoint = 'https://speech.platform.bing.com/speech/recognition/interactive/cognitiveservices/v1?language=en-US';
+var Key = '248162ed0e48475aa055127f1fda4e76';
 
-var RecordAudio = function(){
-    var audio = '';
+var AccessToken = '';
+
+var RecordAudio = function(callback){
     var micInstance = mic({
         rate: '16000',
         channels: '1',
         debug: true,
-        exitOnSilence: 6
+        exitOnSilence: 12
     });
+
     var micInputStream = micInstance.getAudioStream();
+    var outputFileStream = fs.WriteStream('output.wav');
+    micInputStream.pipe(outputFileStream);
 
     micInputStream.on('silence', function() {
         console.log("Got SIGNAL silence");
+        micInstance.stop();
+        SendAudioFileToSTT().then(function (text) {
+            callback(text.DisplayText);
+        });
     });
-    micInputStream.on('data', function(data) {
-        console.log("Recieved Input Stream: " + data.length);
-        audio += data;
-    });
-    micInputStream.on('processExitComplete', function() {
-        console.log("Got SIGNAL processExitComplete");
-        getAuthToken();
-    });
-    micInstance.start();
 
+    micInstance.start();
 };
 
-var getAuthToken = function () {
-    var requestData = {
-        url: 'https://api.cognitive.microsoft.com/sts/v1.0/issueToken',
+var FetchToken = function () {
+    var AuthApiEndpoimt = 'https://api.cognitive.microsoft.com/sts/v1.0/issueToken';
+    var options = {
+        url: AuthApiEndpoimt,
         headers: {
             'content-type': 'application/x-www-form-urlencoded',
-            'Ocp-Apim-Subscription-Key': SPEECH_API_KEY
+            'Ocp-Apim-Subscription-Key': Key
         }
     };
-    request.post(requestData, function (error, response, token) {
-        if (error) {
-            console.error(error);
-        } else if (response.statusCode !== 200) {
-            console.error(token);
+
+    request.post(options, function (err, res, body) {
+        var TimeoutTime = 1000;
+        if(err){
+            console.log(err);
+            TimeoutTime = 3000;
         } else {
-            speechApiAccessToken = 'Bearer ' + token;
-
+            AccessToken = 'Bearer ' + body;
+            TimeoutTime = 500000;
         }
-    });
-};
-var STT = function (file) {
-    var speechApiUrl = [
-        'https://speech.platform.bing.com/recognize?scenarios=smd',
-        'appid=D4D52672-91D7-4C74-8AD8-42B1D98141A5',
-        'locale=en-US',
-        'device.os=wp7',
-        'version=3.0',
-        'format=json',
-        'form=BCSSTT',
-        'instanceid=0F8EBADC-3DE7-46FB-B11A-1B3C3C4309F5',
-        'requestid=' + uuid.v4()
-    ].join('&');
+        setTimeout(function(){
+            console.log('Updating Speech Token');
+            FetchToken();
+        }, TimeoutTime);
 
-    var speechRequestData = {
-        url: speechApiUrl,
+    })
+};
+
+var SendAudioFileToSTT = function () {
+    return new Promise(
+        function (resolve, reject) {
+            StreamToText(resolve, reject);
+        }
+    );
+};
+
+var StreamToText = function (resolve, reject) {
+    var options = {
+        url: SpeechToTextEndpoint,
         headers: {
-            'Authorization': speechApiAccessToken,
-            'content-type': 'audio/wav; codec=\'audio/pcm\'; samplerate=16000'
+            'Accept': 'application/json;text/xml',
+            'Content-Type': 'audio/wav; codec="audio/pcm"; samplerate=16000',
+            'Authorization': AccessToken,
+            'requestid': uuid.v4(),
+            'locale': 'en-US'
         }
     };
 
-    request.post(speechRequestData, function (error, response, body) {
+    fs.createReadStream('output.wav').pipe(request.post(options, function (error, response, body) {
+        fs.unlink('output.wav', function (err) {
+            if(err){
+                console.log(err);
+            }
+        });
+
         if (error) {
             reject(error);
         } else if (response.statusCode !== 200) {
             reject(body);
         } else {
-            resolve(JSON.parse(body).header.name);
+            resolve(JSON.parse(body));
         }
-    });
+    }));
+};
+
+
+var SendToInterpretation = function (queery, callback) {
+    var baseurl = 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/c6a3f914-106d-41c3-b7cd-fffbef6e13b8?subscription-key=5fe2ec884d9d4c09a3acb4085ab6ea17&verbose=true&timezoneOffset=0&q=';
+    var convertedQueery = queery.split(' ').join('_');
+
+    var url = baseurl + convertedQueery;
+
+    superagent.get(url).end(function (err, res) {
+         callback(res.body.intents['0'].intent);
+    })
 };
 
 module.exports = {
-    RecordAudio: RecordAudio
+    RecordAudio: RecordAudio,
+    FetchToken: FetchToken,
+    SendToInterpretation: SendToInterpretation
 };

@@ -2,6 +2,8 @@ var PinAccess = require('./GpioPins/PinInteraction');
 var ImageRecognition = require('./Microsoft/ImageRecognition');
 var Speech = require('./Microsoft/Speech');
 
+Speech.FetchToken();
+
 
 var loopCheck = function(){
     setTimeout(function(){
@@ -9,10 +11,19 @@ var loopCheck = function(){
         loopCheck();
     }, 3000);
 };
+setTimeout(function(){
+    console.log('going to record audio');
+
+    Speech.RecordAudio(function (answer) {
+        Speech.SendToInterpretation(answer, function (convAnswer) {
+            console.log(convAnswer);
+            //handle intent
+        });
+    });
+}, 3000);
 
 
-//Speech.RecordAudio();
-loopCheck();
+//loopCheck();
 
 
 // to get this working you need nodeJs(https://nodejs.org/en/)

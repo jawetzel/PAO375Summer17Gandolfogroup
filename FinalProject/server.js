@@ -11,13 +11,28 @@ var loopCheck = function(){
         loopCheck();
     }, 3000);
 };
-setTimeout(function(){
-    console.log('going to record audio');
 
+//example of how to call the speech stuff
+setTimeout(function(){
     Speech.RecordAudio(function (answer) {
         Speech.SendToInterpretation(answer, function (convAnswer) {
-            console.log(convAnswer);
-            //handle intent
+            switch(convAnswer){
+                case 'Pepsi': {
+                    console.log('hit pepsi');
+                    break;
+                }
+                case 'MistTwist': {
+                    console.log('hit mist twist');
+                    break;
+                }
+                case 'MountianDew': {
+                    console.log('hit mountian dew');
+                    break;
+                }
+                default:{
+                    break;
+                }
+            }
         });
     });
 }, 3000);

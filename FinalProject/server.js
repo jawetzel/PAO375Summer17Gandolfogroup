@@ -15,25 +15,29 @@ var loopCheck = function(){
 //example of how to call the speech stuff
 setTimeout(function(){
     Speech.RecordAudio(function (answer) {
-        Speech.SendToInterpretation(answer, function (convAnswer) {
-            switch(convAnswer){
-                case 'Pepsi': {
-                    console.log('hit pepsi');
-                    break;
+        if(answer.length !== 0){
+            Speech.SendToInterpretation(answer, function (convAnswer) {
+                switch(convAnswer){
+                    case 'Pepsi': {
+                        console.log('hit pepsi');
+                        break;
+                    }
+                    case 'MistTwist': {
+                        console.log('hit mist twist');
+                        break;
+                    }
+                    case 'MountianDew': {
+                        console.log('hit mountian dew');
+                        break;
+                    }
+                    default:{
+                        break;
+                    }
                 }
-                case 'MistTwist': {
-                    console.log('hit mist twist');
-                    break;
-                }
-                case 'MountianDew': {
-                    console.log('hit mountian dew');
-                    break;
-                }
-                default:{
-                    break;
-                }
-            }
-        });
+            });
+        } else {
+            //repeat record, no words found in audio file
+        }
     });
 }, 3000);
 

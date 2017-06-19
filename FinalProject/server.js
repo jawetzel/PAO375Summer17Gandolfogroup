@@ -2,6 +2,15 @@ var PinAccess = require('./GpioPins/PinInteraction');
 var ImageRecognition = require('./Microsoft/ImageRecognition');
 var Speech = require('./Microsoft/Speech');
 
+//var Gpio = require('onoff').Gpio,
+//    led = new Gpio(3, 'out');
+
+//led.write(1, function (hello) {
+//    console.log(hello);
+//}); // 1 = on, 0 = off :)
+//setTimeout(function () {
+//
+//}, 2000);
 Speech.FetchToken();
 
 
@@ -12,7 +21,9 @@ var loopCheck = function(){
     }, 3000);
 };
 
+
 //example of how to call the speech stuff
+/*
 setTimeout(function(){
     Speech.RecordAudio(function (answer) {
         if(answer.length !== 0){
@@ -39,7 +50,7 @@ setTimeout(function(){
             //repeat record, no words found in audio file
         }
     });
-}, 3000);
+}, 3000);*/
 
 
 //loopCheck();

@@ -1,3 +1,8 @@
+
+
+function write() {
+
+}
 var ActavateCokePin = function(){
 
 };

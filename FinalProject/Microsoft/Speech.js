@@ -11,6 +11,28 @@ var Key = '248162ed0e48475aa055127f1fda4e76';
 
 var AccessToken = '';
 
+var Conversation = function () {
+    BeginConversation(function (intent) {
+        switch(intent){
+            case 'Pepsi': {
+                console.log('hit pepsi');
+                break;
+            }
+            case 'MistTwist': {
+                console.log('hit mist twist');
+                break;
+            }
+            case 'MountianDew': {
+                console.log('hit mountian dew');
+                break;
+            }
+            default:{
+                break;
+            }
+        }
+    });
+};
+
 var BeginConversation = function (callback) {
     var intro = new Sound('intro.wav');
     intro.play();
@@ -121,11 +143,11 @@ var SendToInterpretation = function (queery, callback) {
     var url = baseurl + convertedQueery;
 
     superagent.get(url).end(function (err, res) {
-         callback(res.body.intents['0'].intent);
+        callback(res.body.intents['0'].intent);
     })
 };
 
 module.exports = {
-    BeginConversation: BeginConversation,
+    Conversation: Conversation,
     FetchToken: FetchToken
 };

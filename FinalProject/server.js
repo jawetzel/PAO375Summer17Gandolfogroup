@@ -2,16 +2,7 @@ var PinAccess = require('./GpioPins/PinInteraction');
 var ImageRecognition = require('./Microsoft/ImageRecognition');
 var Speech = require('./Microsoft/Speech');
 
-//var Gpio = require('onoff').Gpio,
-//    led = new Gpio(3, 'out');
-
-//led.write(1, function (hello) {
-//    console.log(hello);
-//}); // 1 = on, 0 = off :)
-//setTimeout(function () {
-//
-//}, 2000);
-Speech.FetchToken();
+Speech.FetchToken(); //microsoft speech to text auth token
 
 
 var loopCheck = function(){
@@ -21,29 +12,8 @@ var loopCheck = function(){
     }, 3000);
 };
 
-var Conversation = function () {
-    Speech.BeginConversation(function (intent) {
-        switch(intent){
-            case 'Pepsi': {
-                console.log('hit pepsi');
-                break;
-            }
-            case 'MistTwist': {
-                console.log('hit mist twist');
-                break;
-            }
-            case 'MountianDew': {
-                console.log('hit mountian dew');
-                break;
-            }
-            default:{
-                break;
-            }
-        }
-    });
-};
 
-Conversation();
+//Speech.Conversation(); //call speech stuff
 
 //loopCheck();
 

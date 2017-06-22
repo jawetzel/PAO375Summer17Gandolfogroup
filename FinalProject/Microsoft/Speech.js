@@ -4,11 +4,30 @@ var uuid = require('node-uuid'),
     request = require('request');
 var superagent = require('superagent');
 
+var Sound = require('node-aplay'); //sudo apt-get install alsa-base alsa-utils
+
 var SpeechToTextEndpoint = 'https://speech.platform.bing.com/speech/recognition/interactive/cognitiveservices/v1?language=en-US';
 var Key = '248162ed0e48475aa055127f1fda4e76';
 
 var AccessToken = '';
 
+var BeginConversation = function (callback) {
+    var intro = new Sound('intro.wav');
+    intro.play();
+    intro.on('complete', function () {
+        console.log('Done with playback!');
+        RecordAudio(function () {
+            SendAudioFileToSTT().then(function (text) {
+                SendToInterpretation(text.DisplayText, function (intent){
+                    var exitAudio = new Sound('finishedSelection.wav');
+                    exitAudio.play();
+                    callback(intent);
+                });
+            });
+        });
+    });
+
+};
 var RecordAudio = function(callback){
     var micInstance = mic({
         rate: '16000',
@@ -24,9 +43,7 @@ var RecordAudio = function(callback){
     micInputStream.on('silence', function() {
         console.log("Got SIGNAL silence");
         micInstance.stop();
-        SendAudioFileToSTT().then(function (text) {
-            callback(text.DisplayText);
-        });
+        callback();
     });
 
     micInstance.start();
@@ -109,7 +126,6 @@ var SendToInterpretation = function (queery, callback) {
 };
 
 module.exports = {
-    RecordAudio: RecordAudio,
-    FetchToken: FetchToken,
-    SendToInterpretation: SendToInterpretation
+    BeginConversation: BeginConversation,
+    FetchToken: FetchToken
 };

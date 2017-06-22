@@ -21,37 +21,29 @@ var loopCheck = function(){
     }, 3000);
 };
 
-
-//example of how to call the speech stuff
-/*
-setTimeout(function(){
-    Speech.RecordAudio(function (answer) {
-        if(answer.length !== 0){
-            Speech.SendToInterpretation(answer, function (convAnswer) {
-                switch(convAnswer){
-                    case 'Pepsi': {
-                        console.log('hit pepsi');
-                        break;
-                    }
-                    case 'MistTwist': {
-                        console.log('hit mist twist');
-                        break;
-                    }
-                    case 'MountianDew': {
-                        console.log('hit mountian dew');
-                        break;
-                    }
-                    default:{
-                        break;
-                    }
-                }
-            });
-        } else {
-            //repeat record, no words found in audio file
+var Conversation = function () {
+    Speech.BeginConversation(function (intent) {
+        switch(intent){
+            case 'Pepsi': {
+                console.log('hit pepsi');
+                break;
+            }
+            case 'MistTwist': {
+                console.log('hit mist twist');
+                break;
+            }
+            case 'MountianDew': {
+                console.log('hit mountian dew');
+                break;
+            }
+            default:{
+                break;
+            }
         }
     });
-}, 3000);*/
+};
 
+Conversation();
 
 //loopCheck();
 

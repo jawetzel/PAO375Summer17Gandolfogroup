@@ -71,16 +71,11 @@ var BeginConversation = function (count, callback) {
     intro.play();
 
     intro.on('complete', function () {
-        fs.unlink('introAudio.wav', function (err) {
-            if(err){
-                console.log(err);
-            }
-        });
         console.log('Done with playback!');
         RecordAudio(function () {
             SendAudioFileToSTT().then(function (text) {
                 SendToInterpretation(text.DisplayText, function (intent){
-                    var exitAudio = new Sound('finishedSelection.wav');
+                    var exitAudio = new Sound('End.wav');
                     exitAudio.play();
                     callback(intent);
                 });

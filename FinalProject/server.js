@@ -5,6 +5,12 @@ var Speech = require('./Microsoft/Speech');
 Speech.FetchToken(); //microsoft speech to text auth token
 
 
+var Count = {
+    Pepsi: 3,
+    MistTwist: 3,
+    MountianDew: 3
+};
+
 var loopCheck = function(){
     setTimeout(function(){
         console.log('checking');
@@ -13,7 +19,7 @@ var loopCheck = function(){
 };
 
 
-//Speech.Conversation(); //call speech stuff
+//Speech.Conversation(Count); //call speech stuff
 
 //loopCheck();
 

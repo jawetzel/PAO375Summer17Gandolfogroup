@@ -11,8 +11,8 @@ var Key = '248162ed0e48475aa055127f1fda4e76';
 
 var AccessToken = '';
 
-var Conversation = function () {
-    BeginConversation(function (intent) {
+var Conversation = function (count) {
+    BeginConversation(count, function (intent) {
         switch(intent){
             case 'Pepsi': {
                 console.log('hit pepsi');
@@ -33,10 +33,28 @@ var Conversation = function () {
     });
 };
 
-var BeginConversation = function (callback) {
-    var intro = new Sound('intro.wav');
+var BeginConversation = function (count, callback) {
+    fs.createReadStream('intro.wav').pipe(fs.WriteStream('introAudio.wav'));
+    if(count.Pepsi > 0) {
+        fs.createReadStream('intro.wav').pipe(fs.WriteStream('introAudio.wav'));
+    }
+    if(count.MountianDew > 0){
+        fs.createReadStream('intro.wav').pipe(fs.WriteStream('introAudio.wav'));
+    }
+    if(count.MistTwist > 0){
+        fs.createReadStream('intro.wav').pipe(fs.WriteStream('introAudio.wav'));
+    }
+    fs.createReadStream('intro.wav').pipe(fs.WriteStream('introAudio.wav'));
+
+    var intro = new Sound('introAudio.wav');
     intro.play();
+
     intro.on('complete', function () {
+        fs.unlink('introAudio.wav', function (err) {
+            if(err){
+                console.log(err);
+            }
+        });
         console.log('Done with playback!');
         RecordAudio(function () {
             SendAudioFileToSTT().then(function (text) {

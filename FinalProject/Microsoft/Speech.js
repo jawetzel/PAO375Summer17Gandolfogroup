@@ -14,6 +14,9 @@ var AccessToken = '';
 var Conversation = function (count) {
     BeginConversation(count, function (intent) {
         switch(intent){
+            case 'Error': {
+                break;
+            }
             case 'Pepsi': {
                 console.log('hit pepsi');
                 break;
@@ -34,19 +37,37 @@ var Conversation = function (count) {
 };
 
 var BeginConversation = function (count, callback) {
-    fs.createReadStream('intro.wav').pipe(fs.WriteStream('introAudio.wav'));
+    var intro;
     if(count.Pepsi > 0) {
-        fs.createReadStream('intro.wav').pipe(fs.WriteStream('introAudio.wav'));
+        if(count.MistTwist > 0){
+            if(count.MountianDew > 0){
+                intro = new Sound('All3.wav');
+            } else {
+                intro = new Sound('PepsiAndMist.wav');
+            }
+        } else if(count.MountianDew > 0){
+            intro = new Sound('PepsiAndDew.wav');
+        } else {
+            intro = new Sound('Pepsi.wav');
+        }
+    } else if(count.MistTwist > 0){
+        if(count.MountianDew > 0){
+            intro = new Sound('TwistAndDew.wav');
+        } else {
+            intro = new Sound('Mist.wav');
+        }
+    } else if(count.MountianDew > 0){
+        intro = new Sound('Dew.wav');
+    } else {
+        intro = new Sound('NoStock.wav');
+        callback = 'Error';
     }
     if(count.MountianDew > 0){
-        fs.createReadStream('intro.wav').pipe(fs.WriteStream('introAudio.wav'));
+
     }
     if(count.MistTwist > 0){
-        fs.createReadStream('intro.wav').pipe(fs.WriteStream('introAudio.wav'));
-    }
-    fs.createReadStream('intro.wav').pipe(fs.WriteStream('introAudio.wav'));
 
-    var intro = new Sound('introAudio.wav');
+    }
     intro.play();
 
     intro.on('complete', function () {

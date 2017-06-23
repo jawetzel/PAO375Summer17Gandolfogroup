@@ -19,18 +19,25 @@ var Conversation = function (count) {
             }
             case 'Pepsi': {
                 console.log('hit pepsi');
+                count.Pepsi--;
                 break;
             }
             case 'MistTwist': {
                 console.log('hit mist twist');
+                count.MistTwist--;
                 break;
             }
             case 'MountianDew': {
                 console.log('hit mountian dew');
+                count.MountianDew--;
                 break;
             }
-            default:{
-                break;
+            default: {
+                var audio = new Sound('error.wav');
+                audio.play();
+                audio.on('complete', function () {
+                    Conversation(count);
+                });
             }
         }
     });
@@ -61,12 +68,6 @@ var BeginConversation = function (count, callback) {
     } else {
         intro = new Sound('NoStock.wav');
         callback = 'Error';
-    }
-    if(count.MountianDew > 0){
-
-    }
-    if(count.MistTwist > 0){
-
     }
     intro.play();
 

@@ -85,6 +85,7 @@ var BeginConversation = function (count, callback) {
     });
 
 };
+
 var RecordAudio = function(callback){
     var micInstance = mic({
         rate: '16000',
@@ -169,7 +170,6 @@ var StreamToText = function (resolve, reject) {
         }
     }));
 };
-
 
 var SendToInterpretation = function (queery, callback) {
     var baseurl = 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/c6a3f914-106d-41c3-b7cd-fffbef6e13b8?subscription-key=5fe2ec884d9d4c09a3acb4085ab6ea17&verbose=true&timezoneOffset=0&q=';

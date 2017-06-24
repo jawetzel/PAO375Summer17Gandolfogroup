@@ -1,13 +1,20 @@
 const fs = require('fs');
 const path = require('path'); 
 const request = require('superagent');
-const Camera = require('../Hardware/Camera');
+const Camera = require('raspicam');
 
-let camera = new Camera();
-let userPresent = false;
+let camera = new Camera({
+    mode: 'photo',
+    encoding: 'jpg',
+    quality: 10,
+    width: 500,
+    height: 500,
+    output: 'Temp/image.jpg',
+    timeout: 1
+});
 
 function awaitUser() {
-    camera.CaptureImage().then(function (resolve, reject) {
+    CaptureImage().then(function (resolve, reject) {
         sendImage(resolve, reject);
     });
 
@@ -19,6 +26,13 @@ function awaitUser() {
     function reject(response) {
         console.log(response);
     }
+};
+
+function CaptureImage() {
+    return new Promise((resolve, reject) => {
+        camera.on('exit', resolve);
+        camera.start();
+    });
 };
 
 function sendImage (resolve, reject) {
@@ -55,7 +69,7 @@ function sendImage (resolve, reject) {
     }
 };
 
-module.exports = awaitUser;
+module.exports = { awaitUser: awaitUser };
 
 
 

@@ -11,28 +11,32 @@ var Key = '248162ed0e48475aa055127f1fda4e76';
 
 var AccessToken = '';
 
-var Conversation = function (count) {
+var Conversation = function (count, callback) {
     BeginConversation(count, function (intent) {
         switch(intent){
             case 'Error': {
+                callback(false);
                 break;
             }
             case 'Pepsi': {
                 console.log('hit pepsi');
                 count.Pepsi--;
                 PinInteraction.ActavatePepsiPin();
+                callback(true);
                 break;
             }
             case 'MistTwist': {
                 console.log('hit mist twist');
                 count.MistTwist--;
                 PinInteraction.ActavateMistTwistPin();
+                callback(true);
                 break;
             }
             case 'MountianDew': {
                 console.log('hit mountian dew');
                 count.MountianDew--;
                 PinInteraction.ActavateMountianDewPin();
+                callback(true);
                 break;
             }
             default: {
@@ -164,13 +168,12 @@ var StreamToText = function (resolve, reject) {
                 console.log(err);
             }
         });
-
         if (error) {
             reject(error);
         } else if (response.statusCode !== 200) {
             reject(body);
         } else {
-            resolve(JSON.parse(body));
+            resolve(JSON.parse(body).RecognitionStatus === 'Success' ? JSON.parse(body) : {DisplayText: 'failed'});
         }
     }));
 };

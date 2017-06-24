@@ -13,7 +13,7 @@ let camera = new Camera({
     timeout: 1
 });
 
-function awaitUser() {
+function CheckForUser() {
     CaptureImage().then(function () {
         sendImage(resolve, reject);
     });
@@ -69,7 +69,7 @@ function sendImage (resolve, reject) {
     }
 };
 
-module.exports = { awaitUser: awaitUser };
+module.exports = { CheckForUser: CheckForUser };
 
 
 

@@ -10,18 +10,23 @@ var Count = {
     MountianDew: 3
 };
 
-var loopCheck = function(){
-    setTimeout(function(){
-        ImageRecognition.awaitUser();
-        console.log('checking');
-        loopCheck();
-    }, 3000);
+var loopCheck = function(){  //main loop
+    var userFound = ImageRecognition.CheckForUser();
+    if(userFound){
+        Speech.Conversation(Count, function (callback) {
+            console.log('Success = ' + callback);
+            setTimeout(function () {
+                loopCheck();
+            }, 5000);
+        });
+    } else {
+        setTimeout(function () {
+            loopCheck();
+        }, 3000)
+    }
 };
 
-
-Speech.Conversation(Count); //call speech stuff
-
-loopCheck();
+loopCheck(); //startup
 
 
 // to get this working you need nodeJs(https://nodejs.org/en/)

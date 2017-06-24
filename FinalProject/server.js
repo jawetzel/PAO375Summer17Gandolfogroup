@@ -2,8 +2,7 @@ var PinAccess = require('./GpioPins/PinInteraction');
 var ImageRecognition = require('./Microsoft/ImageRecognition');
 var Speech = require('./Microsoft/Speech');
 
-Speech.FetchToken(); //microsoft speech to text auth token
-
+Speech.FetchToken();
 
 var Count = {
     Pepsi: 3,
@@ -19,7 +18,7 @@ var loopCheck = function(){
 };
 
 
-//Speech.Conversation(Count); //call speech stuff
+Speech.Conversation(Count); //call speech stuff
 
 //loopCheck();
 

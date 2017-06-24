@@ -3,7 +3,7 @@ var fs = require('fs');
 var uuid = require('node-uuid'),
     request = require('request');
 var superagent = require('superagent');
-
+var PinInteraction = require('../GpioPins/PinInteraction');
 var Sound = require('node-aplay'); //sudo apt-get install alsa-base alsa-utils
 
 var SpeechToTextEndpoint = 'https://speech.platform.bing.com/speech/recognition/interactive/cognitiveservices/v1?language=en-US';
@@ -20,16 +20,19 @@ var Conversation = function (count) {
             case 'Pepsi': {
                 console.log('hit pepsi');
                 count.Pepsi--;
+                PinInteraction.ActavatePepsiPin();
                 break;
             }
             case 'MistTwist': {
                 console.log('hit mist twist');
                 count.MistTwist--;
+                PinInteraction.ActavateMistTwistPin();
                 break;
             }
             case 'MountianDew': {
                 console.log('hit mountian dew');
                 count.MountianDew--;
+                PinInteraction.ActavateMountianDewPin();
                 break;
             }
             default: {
@@ -45,6 +48,7 @@ var Conversation = function (count) {
 
 var BeginConversation = function (count, callback) {
     var intro;
+    console.log(count);
     if(count.Pepsi > 0) {
         if(count.MistTwist > 0){
             if(count.MountianDew > 0){

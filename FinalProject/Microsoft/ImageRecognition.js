@@ -1,13 +1,15 @@
 const fs = require('fs');
-const path = require('path');
+const path = require('path'); 
 const request = require('superagent');
+const Camera = require('../Hardware/Camera');
 
-module.exports = {
-    CheckForPerson: checkForPerson
-};
+let camera = new Camera();
+let userPresent = false;
 
-function checkForPerson() {
-    sendImage(resolve, reject);
+function awaitUser() {
+    camera.CaptureImage().then(function (resolve, reject) {
+        sendImage(resolve, reject);
+    });
 
     function resolve(response) {
         const userPresent = response.body.length > 0;
@@ -43,14 +45,6 @@ function sendImage (resolve, reject) {
             const image = getRandomImage();
             return image;
 
-            /** 
-             * 
-             *  TODO: Replace with getMostRecentImage() 
-             *  
-             *  We currently use getRandomImage() to demonstrate API functionality
-             *  to detect user presence.
-             *  
-             * */
             function getRandomImage() {
                 const randomIndex = Math.floor(Math.random() * images.length);
                 const imagePath = `temp/${images[randomIndex]}`;
@@ -61,7 +55,7 @@ function sendImage (resolve, reject) {
     }
 };
 
-
+module.exports = awaitUser;
 
 
 

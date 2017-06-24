@@ -2,17 +2,26 @@ var PinAccess = require('./GpioPins/PinInteraction');
 var ImageRecognition = require('./Microsoft/ImageRecognition');
 var Speech = require('./Microsoft/Speech');
 
+Speech.FetchToken();
+
+var Count = {
+    Pepsi: 3,
+    MistTwist: 3,
+    MountianDew: 3
+};
 
 var loopCheck = function(){
     setTimeout(function(){
+        ImageRecognition.awaitUser();
         console.log('checking');
-        ImageRecognition.CheckForPerson();
         loopCheck();
     }, 3000);
 };
 
 
-loopCheck();
+//Speech.Conversation(Count); //call speech stuff
+
+//loopCheck();
 
 
 // to get this working you need nodeJs(https://nodejs.org/en/)

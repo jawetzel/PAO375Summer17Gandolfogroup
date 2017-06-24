@@ -19,9 +19,9 @@ var loopCheck = function(){
 };
 
 
-//Speech.Conversation(Count); //call speech stuff
+Speech.Conversation(Count); //call speech stuff
 
-//loopCheck();
+loopCheck();
 
 
 // to get this working you need nodeJs(https://nodejs.org/en/)

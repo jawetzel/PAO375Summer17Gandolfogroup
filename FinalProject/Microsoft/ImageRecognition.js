@@ -14,7 +14,7 @@ let camera = new Camera({
 });
 
 function awaitUser() {
-    CaptureImage().then(function (resolve, reject) {
+    CaptureImage().then(function () {
         sendImage(resolve, reject);
     });
 
@@ -30,6 +30,7 @@ function awaitUser() {
 
 function CaptureImage() {
     return new Promise((resolve, reject) => {
+	setTimeout(reject, 5000);
         camera.on('exit', resolve);
         camera.start();
     });
@@ -55,13 +56,12 @@ function sendImage (resolve, reject) {
         };
 
         function getBase64EncodedImage() {
-            const images = fs.readdirSync('temp').filter(file => path.extname(file) === '.jpg');
-            const image = getRandomImage();
+            const images = fs.readdirSync('Temp').filter(file => path.extname(file) === '.jpg');
+            const image = getImage();
             return image;
 
-            function getRandomImage() {
-                const randomIndex = Math.floor(Math.random() * images.length);
-                const imagePath = `temp/${images[randomIndex]}`;
+            function getImage() {
+                const imagePath = `Temp/image.jpg`;
                 const image = fs.readFileSync(imagePath);
                 return image;
             }

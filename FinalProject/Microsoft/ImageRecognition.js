@@ -3,7 +3,7 @@ const path = require('path');
 const request = require('superagent');
 const Camera = require('raspicam');
 
-let camera = new Camera({
+const camera = new Camera({
     mode: 'photo',
     encoding: 'jpg',
     quality: 10,
@@ -13,19 +13,10 @@ let camera = new Camera({
     timeout: 1
 });
 
-function CheckForUser() {
-    CaptureImage().then(function () {
-        sendImage(resolve, reject);
+function CheckForUser(resolve, reject) {
+    return CaptureImage().then(function () {
+        return sendImage();
     });
-
-    function resolve(response) {
-        const userPresent = response.body.length > 0;
-        console.log(`${userPresent ? '' : 'No '}User Detected`);
-    }
-
-    function reject(response) {
-        console.log(response);
-    }
 };
 
 function CaptureImage() {
@@ -36,14 +27,13 @@ function CaptureImage() {
     });
 };
 
-function sendImage (resolve, reject) {
+function sendImage() {
     const { url, payload, headers } = getRequestConfig();
 
-    request
+    return request
         .post(url)
         .send(payload)
-        .set(headers)
-        .then(resolve, reject);
+        .set(headers);
 
     function getRequestConfig() {
         return {

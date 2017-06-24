@@ -168,13 +168,12 @@ var StreamToText = function (resolve, reject) {
                 console.log(err);
             }
         });
-
         if (error) {
             reject(error);
         } else if (response.statusCode !== 200) {
             reject(body);
         } else {
-            resolve(JSON.parse(body));
+            resolve(JSON.parse(body).RecognitionStatus === 'Success' ? JSON.parse(body) : {DisplayText: 'failed'});
         }
     }));
 };

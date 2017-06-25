@@ -10,6 +10,7 @@
   "author": "NotRs",
   "license": "ISC",
   "dependencies": {
+    "file-system": "^2.2.2",
     "aplay": "^1.1.0",
     "fs": "0.0.1-security",
     "mic": "^2.1.1",

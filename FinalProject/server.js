@@ -10,27 +10,27 @@ var Count = {
     MountianDew: 3
 };
 
-var loopCheck = function(){  //main loop
+var loopCheck = function () {  //main loop
     ImageRecognition.CheckForUser().then(resolve, reject);
 
     function resolve(response) {
-	var userFound = response.body.length > 0;
-	if (userFound) {
-	    Speech.Conversation(Count, function (callback) {
-		console.log('Success = ' + callback);
-	        setTimeout(function () {
-	            loopCheck();
-	        }, 5000);
-	    });
-	} else {
-	    setTimeout(function () {
-	        loopCheck();
-	    }, 3000);
+		var userFound = response.body.length > 0;
+		if (userFound) {
+			Speech.Conversation(Count, function (callback) {
+				console.log('Success = ' + callback);
+				setTimeout(function () {
+					loopCheck();
+				}, 5000);
+			});
+		} else {
+			setTimeout(function () {
+				loopCheck();
+			}, 3000);
+		}
 	}
-    }
 
     function reject() {
-	console.log('API Request Failed');
+		console.log('API Request Failed');
     }
 };
 

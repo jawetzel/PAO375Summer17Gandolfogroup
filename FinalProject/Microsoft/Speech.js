@@ -3,7 +3,7 @@ var fs = require('fs');
 var uuid = require('node-uuid'),
     request = require('request');
 var superagent = require('superagent');
-
+var PinInteraction = require('../GpioPins/PinInteraction');
 var Sound = require('node-aplay'); //sudo apt-get install alsa-base alsa-utils
 
 var SpeechToTextEndpoint = 'https://speech.platform.bing.com/speech/recognition/interactive/cognitiveservices/v1?language=en-US';
@@ -11,25 +11,49 @@ var Key = '248162ed0e48475aa055127f1fda4e76';
 
 var AccessToken = '';
 
-var Conversation = function (count) {
+var Conversation = function (count, callback) {
     BeginConversation(count, function (intent) {
+        console.log(intent);
         switch(intent){
             case 'Error': {
+                callback(false);
                 break;
             }
             case 'Pepsi': {
+                var exitAudio = new Sound('End.wav');
+                exitAudio.play();
                 console.log('hit pepsi');
+                count.Pepsi--;
+                PinInteraction.ActavatePepsiPin();
+                callback(true);
                 break;
             }
             case 'MistTwist': {
+                var exitAudio = new Sound('End.wav');
+                exitAudio.play();
                 console.log('hit mist twist');
+                count.MistTwist--;
+                PinInteraction.ActavateMistTwistPin();
+                callback(true);
                 break;
             }
             case 'MountianDew': {
+                var exitAudio = new Sound('End.wav');
+                exitAudio.play();
                 console.log('hit mountian dew');
+                count.MountianDew--;
+                PinInteraction.ActavateMountianDewPin();
+                callback(true);
                 break;
             }
-            default:{
+            default: {
+                var audio = new Sound('error.wav');
+                audio.play();
+                audio.on('complete', function () {
+                    Conversation(count, function (answer) {
+                        console.log('answer is: ' + answer);
+                    });
+                });
                 break;
             }
         }
@@ -38,6 +62,7 @@ var Conversation = function (count) {
 
 var BeginConversation = function (count, callback) {
     var intro;
+    console.log(count);
     if(count.Pepsi > 0) {
         if(count.MistTwist > 0){
             if(count.MountianDew > 0){
@@ -61,35 +86,35 @@ var BeginConversation = function (count, callback) {
     } else {
         intro = new Sound('NoStock.wav');
         callback = 'Error';
-    }
-    if(count.MountianDew > 0){
-
-    }
-    if(count.MistTwist > 0){
-
+        intro.play();
+        callback(false);
+        return;
     }
     intro.play();
 
     intro.on('complete', function () {
         console.log('Done with playback!');
         RecordAudio(function () {
-            SendAudioFileToSTT().then(function (text) {
-                SendToInterpretation(text.DisplayText, function (intent){
-                    var exitAudio = new Sound('End.wav');
-                    exitAudio.play();
-                    callback(intent);
-                });
+            SendAudioFileToSTT().then(function (text, reject) {
+                if(reject){
+                    callback('audio fail');
+                } else {
+                    SendToInterpretation(text.DisplayText, function (intent){
+                        callback(intent);
+                    });
+                }
             });
         });
     });
 
 };
+
 var RecordAudio = function(callback){
     var micInstance = mic({
         rate: '16000',
         channels: '1',
         debug: true,
-        exitOnSilence: 12
+        exitOnSilence: 6
     });
 
     var micInputStream = micInstance.getAudioStream();
@@ -99,7 +124,9 @@ var RecordAudio = function(callback){
     micInputStream.on('silence', function() {
         console.log("Got SIGNAL silence");
         micInstance.stop();
-        callback();
+        setTimeout(function () {
+            callback();
+        }, 200);
     });
 
     micInstance.start();
@@ -158,17 +185,15 @@ var StreamToText = function (resolve, reject) {
                 console.log(err);
             }
         });
-
         if (error) {
             reject(error);
         } else if (response.statusCode !== 200) {
             reject(body);
         } else {
-            resolve(JSON.parse(body));
+            resolve(JSON.parse(body).RecognitionStatus === 'Success' ? JSON.parse(body) : {DisplayText: 'failed'});
         }
     }));
 };
-
 
 var SendToInterpretation = function (queery, callback) {
     var baseurl = 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/c6a3f914-106d-41c3-b7cd-fffbef6e13b8?subscription-key=5fe2ec884d9d4c09a3acb4085ab6ea17&verbose=true&timezoneOffset=0&q=';

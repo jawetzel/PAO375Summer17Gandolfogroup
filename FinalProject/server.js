@@ -1,8 +1,8 @@
 var PinAccess = require('./GpioPins/PinInteraction');
 var ImageRecognition = require('./Microsoft/ImageRecognition');
 var Speech = require('./Microsoft/Speech');
+Speech.FetchToken();
 
-Speech.FetchToken(); //microsoft speech to text auth token
 
 
 var Count = {
@@ -11,17 +11,82 @@ var Count = {
     MountianDew: 3
 };
 
-var loopCheck = function(){
-    setTimeout(function(){
-        console.log('checking');
-        loopCheck();
-    }, 3000);
+var loopCheck = function () {  //main loop
+    ImageRecognition.CheckForUser().then(resolve, reject);
+
+    function resolve(response) {
+        var userFound = response.body.length > 0;
+        if (userFound) {
+            Speech.Conversation(Count, function (callback) {
+                console.log('Success = ' + callback);
+                setTimeout(function () {
+                    loopCheck();
+                }, 5000);
+            });
+        } else {
+            setTimeout(function () {
+                loopCheck();
+            }, 3000);
+        }
+    }
+
+    function reject() {
+        console.log('API Request Failed');
+    }
+};
+//loopCheck();
+
+
+
+
+// just speech for demo below //
+var justSpeech = function () {
+    Speech.Conversation(Count, function (callback) {
+        console.log('Success = ' + callback);
+        setTimeout(function () {
+            justSpeech();
+        }, 5000);
+    });
 };
 
+justSpeech(); //startup
 
-//Speech.Conversation(Count); //call speech stuff
 
-//loopCheck();
+
+
+// just speech for demo above //
+
+// below is a pin demo //
+var pepsi = function () {
+    console.log('run pepsi');
+    PinAccess.ActavatePepsiPin();
+    setTimeout(function () {
+        dew();
+    },5000);
+};
+
+var mist = function () {
+    console.log('run Mist');
+    PinAccess.ActavateMistTwistPin();
+    setTimeout(function () {
+        pepsi();
+    },5000);
+};
+
+var dew = function () {
+    console.log('run Dew');
+    PinAccess.ActavateMountianDewPin();
+    setTimeout(function () {
+        mist();
+    },5000);
+};
+//pepsi();
+
+// above is a pin demo //
+
+
+
+
 
 
 // to get this working you need nodeJs(https://nodejs.org/en/)
@@ -40,9 +105,9 @@ var loopCheck = function(){
  var url = "https://698d3691-3163-466b-bb68-2af7d89fa992:Aw7o8TrpAx@twcservice.mybluemix.net/api/weather/v1/geocode/" + req.latitude + "/" + req.longitude + "/observations.json?units=m&language=en-US";
 
  superagent.get(url).then(function(result){
-    callback(result);
+ callback(result);
  })
-*/
+ */
 
 
 // superagent example post:
@@ -52,7 +117,7 @@ var loopCheck = function(){
  uperAgent.post(Url)
  .send({message: endResponse.handledIntent.cleanResponse, voice: voice, responseFormat: returnAudioType })
  .then(function (res, err) {
-    console.log(res);
-  }
+ console.log(res);
+ }
 
  */

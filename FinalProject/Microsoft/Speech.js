@@ -13,12 +13,15 @@ var AccessToken = '';
 
 var Conversation = function (count, callback) {
     BeginConversation(count, function (intent) {
+        console.log(intent);
         switch(intent){
             case 'Error': {
                 callback(false);
                 break;
             }
             case 'Pepsi': {
+                var exitAudio = new Sound('End.wav');
+                exitAudio.play();
                 console.log('hit pepsi');
                 count.Pepsi--;
                 PinInteraction.ActavatePepsiPin();
@@ -26,6 +29,8 @@ var Conversation = function (count, callback) {
                 break;
             }
             case 'MistTwist': {
+                var exitAudio = new Sound('End.wav');
+                exitAudio.play();
                 console.log('hit mist twist');
                 count.MistTwist--;
                 PinInteraction.ActavateMistTwistPin();
@@ -33,6 +38,8 @@ var Conversation = function (count, callback) {
                 break;
             }
             case 'MountianDew': {
+                var exitAudio = new Sound('End.wav');
+                exitAudio.play();
                 console.log('hit mountian dew');
                 count.MountianDew--;
                 PinInteraction.ActavateMountianDewPin();
@@ -43,8 +50,11 @@ var Conversation = function (count, callback) {
                 var audio = new Sound('error.wav');
                 audio.play();
                 audio.on('complete', function () {
-                    Conversation(count);
+                    Conversation(count, function (answer) {
+                        console.log('answer is: ' + answer);
+                    });
                 });
+                break;
             }
         }
     });
@@ -76,18 +86,23 @@ var BeginConversation = function (count, callback) {
     } else {
         intro = new Sound('NoStock.wav');
         callback = 'Error';
+        intro.play();
+        callback(false);
+        return;
     }
     intro.play();
 
     intro.on('complete', function () {
         console.log('Done with playback!');
         RecordAudio(function () {
-            SendAudioFileToSTT().then(function (text) {
-                SendToInterpretation(text.DisplayText, function (intent){
-                    var exitAudio = new Sound('End.wav');
-                    exitAudio.play();
-                    callback(intent);
-                });
+            SendAudioFileToSTT().then(function (text, reject) {
+                if(reject){
+                    callback('audio fail');
+                } else {
+                    SendToInterpretation(text.DisplayText, function (intent){
+                        callback(intent);
+                    });
+                }
             });
         });
     });
@@ -99,7 +114,7 @@ var RecordAudio = function(callback){
         rate: '16000',
         channels: '1',
         debug: true,
-        exitOnSilence: 12
+        exitOnSilence: 6
     });
 
     var micInputStream = micInstance.getAudioStream();
@@ -109,7 +124,9 @@ var RecordAudio = function(callback){
     micInputStream.on('silence', function() {
         console.log("Got SIGNAL silence");
         micInstance.stop();
-        callback();
+        setTimeout(function () {
+            callback();
+        }, 200);
     });
 
     micInstance.start();

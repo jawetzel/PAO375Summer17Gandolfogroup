@@ -1,76 +1,44 @@
-var Gpio = require('pigpio').Gpio;
+var i2cBus = require("i2c-bus");
+var Pca9685Driver = require("pca9685").Pca9685Driver;
 
-var gpio4 = new Gpio(4, {mode: Gpio.OUTPUT});
-var gpio17 = new Gpio(17, {mode: Gpio.OUTPUT});
-var gpio27 = new Gpio(27, {mode: Gpio.OUTPUT});
-var gpio22 = new Gpio(22, {mode: Gpio.OUTPUT});
-var gpio5 = new Gpio(5, {mode: Gpio.OUTPUT});
-var gpio6 = new Gpio(6, {mode: Gpio.OUTPUT});
+var options = {
+    i2c: i2cBus.openSync(1),
+    address: 0x40,
+    frequency: 50,
+    debug: false
+};
+
 
 var ActavatePepsiPin = function(){
-    Gpio4Max();
-    Gpio17Max();
-    setTimeout(function () {
-       Gpio4Min();
-        Gpio17Min();
-    }, 1500);
+    activatePin(15, 2200, 600);
 };
 
 var ActavateMistTwistPin = function(){
-    Gpio27Max();
-    Gpio22Max();
-    setTimeout(function () {
-        Gpio27Min();
-        Gpio22Min();
-    }, 1500);
+    activatePin(14, 2200, 600);
+
 };
 
 var ActavateMountianDewPin = function(){
-    Gpio5Max();
-    Gpio6Max();
-    setTimeout(function () {
-        Gpio5Min();
-        Gpio6Min();
-    }, 1500);
+    activatePin(13, 2200, 600);
+
 };
 
-var Gpio4Max = function () {
-    gpio4.servoWrite(2000);
-};
-var Gpio17Max = function () {
-    gpio17.servoWrite(2000);
-};
-var Gpio27Max = function () {
-    gpio27.servoWrite(2000);
-};
-var Gpio22Max = function () {
-    gpio22.servoWrite(2000);
-};
-var Gpio5Max = function () {
-    gpio5.servoWrite(2000);
-};
-var Gpio6Max = function () {
-    gpio6.servoWrite(2000);
-};
-
-
-var Gpio4Min = function () {
-    gpio4.servoWrite(500);
-};
-var Gpio17Min = function () {
-    gpio17.servoWrite(500);
-};
-var Gpio27Min = function () {
-    gpio27.servoWrite(500);
-};
-var Gpio22Min = function () {
-    gpio22.servoWrite(500);
-};
-var Gpio5Min = function () {
-    gpio5.servoWrite(500);
-};
-var Gpio6Min = function () {
-    gpio6.servoWrite(500);
+var activatePin = function (pin, pulseStart, pulseEnd) {
+    pwm = new Pca9685Driver(options, function(err) {
+        if (err) {
+            console.error("Error initializing PCA9685");
+            process.exit(-1);
+        }
+        pwm.setPulseRange(0, 42, 255, function() {
+            if (err) {
+                console.error("Error setting pulse range.");
+            }
+        });
+        pwm.setPulseLength(pin, pulseStart);
+        setTimeout(function () {
+            pwm.setPulseLength(pin, pulseEnd);
+        }, 2500)
+    });
 };
 
 module.exports = {

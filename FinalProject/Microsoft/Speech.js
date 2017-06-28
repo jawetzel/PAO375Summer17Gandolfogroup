@@ -52,6 +52,7 @@ var Conversation = function (count, callback) {
                 audio.on('complete', function () {
                     Conversation(count, function (answer) {
                         console.log('answer is: ' + answer);
+                        callback(answer);
                     });
                 });
                 break;

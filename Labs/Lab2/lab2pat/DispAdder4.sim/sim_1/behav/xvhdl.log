@@ -1,0 +1,10 @@
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Cmps375/DispAdder4/DispAdder4.srcs/sources_1/imports/adder1/Adder1.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity Adder1
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Cmps375/DispAdder4/DispAdder4.srcs/sources_1/new/Adder4.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity Adder4
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Cmps375/DispAdder4/DispAdder4.srcs/sources_1/new/Bin2Hex.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity Bin2Hex
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Cmps375/DispAdder4/DispAdder4.srcs/sources_1/new/DispAdder4.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity DispAdder4
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Cmps375/DispAdder4/DispAdder4.srcs/sim_1/new/DispAdder4_tb.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity DispAdder4_tb

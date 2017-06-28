@@ -9,7 +9,7 @@ entity adder4 is
         sum: out std_logic_vector(N-1 downto 0));
 end adder4;
 
-architecture Behaviorial of adder4 is
+rchitecture Behaviorial of adder4 is
     signal out1, out2, out3 : std_logic;
     
     component adder1

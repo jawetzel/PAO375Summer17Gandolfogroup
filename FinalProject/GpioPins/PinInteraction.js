@@ -10,16 +10,16 @@ var options = {
 
 
 var ActavatePepsiPin = function(){
-    activatePin(15, 2200, 600);
+    activatePin(15, 2400, 600);
 };
 
 var ActavateMistTwistPin = function(){
-    activatePin(14, 2200, 600);
+    activatePin(14, 2400, 600);
 
 };
 
 var ActavateMountianDewPin = function(){
-    activatePin(13, 2200, 600);
+    activatePin(13, 2400, 600);
 
 };
 

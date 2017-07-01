@@ -42,5 +42,5 @@ architecture Behavioral of adder1 is
 
 begin
     sum <= cIn xor ( a xor b );
-    sum <= (a and b) or ((a xor b) and cIn); 
+    cOut <= (a and b) or ((a xor b) and cIn); 
 end Behavioral;

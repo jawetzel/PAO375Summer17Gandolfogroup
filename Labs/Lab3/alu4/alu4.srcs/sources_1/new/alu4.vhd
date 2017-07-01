@@ -50,9 +50,7 @@ BEGIN
     WITH control SELECT
     overflow <= 
     (not result_sig(3) and a(3) and b(3)) or (result_sig(3) and  not a(3) and not b(3)) when "10",
-    (result_sig(3) and a(3) and b(3)) or (not result_sig(3) and a(3) and not b(3)) when "11",
-    '0' when "00",
-    '0' when "01";
+    '0' when others;
 
     zero <= (not result_sig(0) and not result_sig(1) and not result_sig(2) and not result_sig(3));
 END behavioral;

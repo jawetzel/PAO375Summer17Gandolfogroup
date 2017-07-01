@@ -12,9 +12,11 @@ END Alu1;
 ARCHITECTURE behavioral OF Alu1 IS
  COMPONENT adder1
  PORT (
- a, b, cIn : IN std_logic;
- cOut, sum : OUT std_logic);
+     a, b, cIn : IN std_logic;
+     cOut, sum : OUT std_logic);
  END COMPONENT;
+ 
+ 
  SIGNAL a_sig, b_sig: STD_LOGIC;
  SIGNAL sum_sig, carryOut_sig: STD_LOGIC;
  SIGNAL result_sig: STD_LOGIC;
@@ -23,7 +25,7 @@ BEGIN
  a_sig <= a;
  b_sig <= NOT b WHEN control = "11" ELSE -- SUBTRACT (1's complement)
  b;
- co: adder1 PORT MAP(a_sig, b_sig, carryIn, carryOut_sig, sum_sig);
+ co: adder1 PORT MAP(a => a_sig, b => b_sig, cIn => carryIn, cOut => carryOut_sig, sum => sum_sig);
 
  -- ADD and SUBTRACT operations do the same thing (ADD)
  WITH control SELECT

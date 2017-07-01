@@ -5,13 +5,15 @@ GENERIC(CONSTANT N: INTEGER := 4; -- 4 bits ALU
  CONSTANT Z: STD_LOGIC_VECTOR(3 DOWNTO 1) := "000" -- 3 Zeros
 );
 PORT(
-a, b: IN STD_LOGIC_VECTOR(N-1 DOWNTO 0);
-control: IN STD_LOGIC_VECTOR(1 DOWNTO 0);
-overflow: OUT STD_LOGIC;
-zero: OUT STD_LOGIC;
-carryOut: OUT STD_LOGIC;
-result: OUT STD_LOGIC_VECTOR(6 DOWNTO 0)
- );
+    a, b: IN STD_LOGIC_VECTOR(N-1 DOWNTO 0);
+    control: IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+    overflow: OUT STD_LOGIC;
+    zero: OUT STD_LOGIC;
+    carryOut: OUT STD_LOGIC;
+    result: OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
+    an: OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
+);
+
 END Alu4;
 ARCHITECTURE behavioral OF Alu4 IS
 COMPONENT Alu1
@@ -43,6 +45,7 @@ BEGIN
 
 
     u5: Bin2Hex port map(bin => result_sig, hex => result);
+    an <= "11111110";    
     
     WITH control SELECT
     overflow <= 

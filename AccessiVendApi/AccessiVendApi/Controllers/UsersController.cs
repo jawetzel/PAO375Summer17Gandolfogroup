@@ -24,10 +24,18 @@ namespace AccessiVendApi.Controllers
 
         [Route("listUsers")]
         [HttpGet]
-        public IEnumerable<User> GetUsers()
+        public JsonResult GetUsers()
         {
-            return _context.Users;
+            try
+            {
+                return Json(new { Success = true, Users = _context.Users.Where(user => user != null).ToList() });
+            }
+            catch (Exception)
+            {
+                return Json(new { Success = false });
+            }
         }
+
         [Route("getUser")]
         [HttpGet]
         public JsonResult GetUserByName([FromBody]string name)

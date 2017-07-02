@@ -37,7 +37,7 @@ namespace AccessiVendApi.Controllers
         }
 
         [Route("getUser")]
-        [HttpGet]
+        [HttpPost]
         public JsonResult GetUserByName([FromBody]string name)
         {
             try
@@ -52,7 +52,7 @@ namespace AccessiVendApi.Controllers
         }
 
         [Route("buyDrink")]
-        [HttpGet]
+        [HttpPost]
         public JsonResult OrderDrink([FromBody]BuyDrink order)
         {
             try

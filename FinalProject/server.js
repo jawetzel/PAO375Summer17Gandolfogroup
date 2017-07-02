@@ -1,9 +1,12 @@
 var PinAccess = require('./GpioPins/PinInteraction');
 var ImageRecognition = require('./Microsoft/ImageRecognition');
 var Speech = require('./Microsoft/Speech');
-Speech.FetchToken();
+var ApiCalls = require('./ApiCalls/AccessiVendApiCalls');
+//Speech.FetchToken();
 
-
+ApiCalls.ChargeCustomer('hel;p', function (response) {
+    console.log(response);
+});
 
 var Count = {
     Pepsi: 3,
@@ -49,7 +52,7 @@ var justSpeech = function () {
     });
 };
 
-justSpeech(); //startup
+//justSpeech(); //startup
 
 
 

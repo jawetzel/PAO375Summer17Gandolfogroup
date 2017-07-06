@@ -1,22 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="synth_1" LaunchPart="xc7a100tcsg324-1" LaunchTime="1498929801">
-  <File Type="RDS-PROPCONSTRS" Name="Alu4_drc_synth.rpt"/>
-  <File Type="PA-TCL" Name="Alu4.tcl"/>
-  <File Type="RDS-RDS" Name="Alu4.vds"/>
-  <File Type="RDS-UTIL" Name="Alu4_utilization_synth.rpt"/>
-  <File Type="RDS-UTIL-PB" Name="Alu4_utilization_synth.pb"/>
-  <File Type="RDS-DCP" Name="Alu4.dcp"/>
-  <File Type="VDS-TIMINGSUMMARY" Name="Alu4_timing_summary_synth.rpt"/>
-  <File Type="VDS-TIMING-PB" Name="Alu4_timing_summary_synth.pb"/>
+<GenRun Id="synth_1" LaunchPart="xc7a100tcsg324-1" LaunchTime="1499375374">
+  <File Type="RDS-PROPCONSTRS" Name="DispAlu4_drc_synth.rpt"/>
+  <File Type="PA-TCL" Name="DispAlu4.tcl"/>
+  <File Type="RDS-RDS" Name="DispAlu4.vds"/>
+  <File Type="RDS-UTIL" Name="DispAlu4_utilization_synth.rpt"/>
+  <File Type="RDS-UTIL-PB" Name="DispAlu4_utilization_synth.pb"/>
+  <File Type="RDS-DCP" Name="DispAlu4.dcp"/>
+  <File Type="VDS-TIMINGSUMMARY" Name="DispAlu4_timing_summary_synth.rpt"/>
+  <File Type="VDS-TIMING-PB" Name="DispAlu4_timing_summary_synth.pb"/>
   <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
     <Filter Type="Srcs"/>
     <File Path="$PSRCDIR/sources_1/new/adder1.vhd">
-      <FileInfo>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
-    <File Path="$PSRCDIR/sources_1/new/bin2Hex.vhd">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -28,7 +22,19 @@
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
+    <File Path="$PSRCDIR/sources_1/new/bin2Hex.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
     <File Path="$PSRCDIR/sources_1/new/alu4.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/DispAlu4.vhd">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -36,7 +42,7 @@
     </File>
     <Config>
       <Option Name="DesignMode" Val="RTL"/>
-      <Option Name="TopModule" Val="Alu4"/>
+      <Option Name="TopModule" Val="DispAlu4"/>
       <Option Name="TopAutoSet" Val="TRUE"/>
     </Config>
   </FileSet>

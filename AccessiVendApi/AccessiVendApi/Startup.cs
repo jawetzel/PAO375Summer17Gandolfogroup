@@ -30,8 +30,8 @@ namespace AccessiVendApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<CoreContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            //services.AddDbContext<CoreContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LiveConnection")));
+            //services.AddDbContext<CoreContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<CoreContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LiveConnection")));
 
             services.AddScoped<UserServices>();
             services.AddScoped<DrinkServices>();

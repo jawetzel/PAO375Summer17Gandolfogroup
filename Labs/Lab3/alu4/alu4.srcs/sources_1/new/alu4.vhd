@@ -10,8 +10,7 @@ PORT(
     overflow: OUT STD_LOGIC;
     zero: OUT STD_LOGIC;
     carryOut: OUT STD_LOGIC;
-    result: OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
-    an: OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
+    result: OUT STD_LOGIC_VECTOR(3 DOWNTO 0)
 );
 
 END Alu4;
@@ -26,13 +25,6 @@ COMPONENT Alu1
  );
  END COMPONENT;
 
-component Bin2Hex
-    PORT(
-    bin: IN STD_LOGIC_VECTOR(3 DOWNTO 0); -- 4-bit binary inputs
-    hex: OUT STD_LOGIC_VECTOR(6 DOWNTO 0) -- 7-segment hex display
-    );
-end component;
-
  SIGNAL carry_sig: STD_LOGIC_VECTOR(N DOWNTO 0); -- carry_sig(N) = MSB carryOut
  SIGNAL result_sig: STD_LOGIC_VECTOR(N-1 DOWNTO 0);
  signal startCin : std_logic;
@@ -43,9 +35,7 @@ BEGIN
     u3: Alu1 port map(a => a(2), b => b(2), carryIn => carry_sig(1), control => control, carryOut => carry_sig(2), result => result_sig(2) );
     u4: Alu1 port map(a => a(3), b => b(3), carryIn => carry_sig(2), control => control, carryOut => carryOut, result => result_sig(3) );
 
-
-    u5: Bin2Hex port map(bin => result_sig, hex => result);
-    an <= "11111110";    
+    result <= result_sig;
     
     WITH control SELECT
     overflow <= 

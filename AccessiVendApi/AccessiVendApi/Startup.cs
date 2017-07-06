@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using AccessiVendApi.Dtos;
 
 namespace AccessiVendApi
 {
@@ -35,7 +36,10 @@ namespace AccessiVendApi
             services.AddScoped<UserServices>();
             services.AddScoped<DrinkServices>();
             services.AddScoped<AdminServices>();
-            // Add framework services.
+            services.AddScoped<FaceServices>();
+
+            services.Configure<FaceApiSettings>(Configuration.GetSection("ApiSettings").GetSection("FaceApi"));
+
             services.AddMvc();
         }
 

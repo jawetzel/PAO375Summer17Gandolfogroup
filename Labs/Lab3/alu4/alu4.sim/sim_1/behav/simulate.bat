@@ -1,6 +1,6 @@
 @echo off
 set xv_path=C:\\Xilinx\\Vivado\\2016.4\\bin
-call %xv_path%/xsim DispAlu4_tb_behav -key {Behavioral:sim_1:Functional:DispAlu4_tb} -tclbatch DispAlu4_tb.tcl -log simulate.log
+call %xv_path%/xsim Alu4_tb_behav -key {Behavioral:sim_1:Functional:Alu4_tb} -tclbatch Alu4_tb.tcl -log simulate.log
 if "%errorlevel%"=="0" goto SUCCESS
 if "%errorlevel%"=="1" goto END
 :END

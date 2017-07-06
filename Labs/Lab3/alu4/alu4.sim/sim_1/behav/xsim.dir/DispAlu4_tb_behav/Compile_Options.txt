@@ -1,1 +1,0 @@
--wto "580a815d74fe46428f0a0990fb5ba427" --debug "typical" --relax --mt "2" -L "xil_defaultlib" -L "secureip" --snapshot "DispAlu4_tb_behav" "xil_defaultlib.DispAlu4_tb" -log "elaborate.log" 

@@ -34,19 +34,20 @@ namespace AccessiVendApi
 
             services.AddScoped<UserServices>();
             services.AddScoped<DrinkServices>();
+            services.AddScoped<AdminServices>();
             // Add framework services.
             services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, CoreContext DbContext)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, CoreContext DbContext, AdminServices adminServ)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
             app.UseMvc();
 
-            DbInitialize.Initialize(DbContext);
+            DbInitialize.Initialize(DbContext, adminServ);
         }
     }
 }

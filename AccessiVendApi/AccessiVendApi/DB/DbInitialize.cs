@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AccessiVendApi.DB.Tables;
+using AccessiVendApi.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace AccessiVendApi.DB
 {
     public static class DbInitialize
     {
-        public static void Initialize(CoreContext context)
+        public static void Initialize(CoreContext context, AdminServices adminServ)
         {
             context.Database.EnsureCreated();
             if (!context.DrinkTypes.Any())
@@ -69,6 +70,19 @@ namespace AccessiVendApi.DB
             if (!context.DrinkOrders.Any())
             {
                 //setup DrinkOrders
+            }
+            if (!context.Admins.Any())
+            {
+                adminServ.CreateAdmin(new Admin
+                {
+                    Password = "icewater",
+                    Username = "jawetzel"
+                });
+                adminServ.CreateAdmin(new Admin()
+                {
+                    Password = "password",
+                    Username = "rcraft"
+                });
             }
         }
     }

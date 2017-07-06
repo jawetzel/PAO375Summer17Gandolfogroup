@@ -9,6 +9,7 @@ using AccessiVendApi.DB;
 using AccessiVendApi.DB.Tables;
 using AccessiVendApi.Services;
 using AccessiVendApi.ViewModels;
+using System.Diagnostics;
 
 namespace AccessiVendApi.Controllers
 {
@@ -17,10 +18,23 @@ namespace AccessiVendApi.Controllers
     public class UsersController : Controller
     {
         private readonly UserServices _userServ;
+        private readonly FaceServices _faceService;
 
-        public UsersController(UserServices userServ)
+        Action<string> Test1 = response => { Debug.WriteLine("User Found"); };
+        Action<string> Test2 = response => { Debug.WriteLine("No User Found"); };
+
+        public UsersController(UserServices userServ, FaceServices faceService)
         {
             _userServ = userServ;
+            _faceService = faceService;
+        }
+
+        [Route("testRyan")]
+        [HttpPost]
+        public JsonResult TestRyan([FromBody]string encodedImage)
+        {
+            _faceService.DetectFace(encodedImage, Test1, Test2);
+            return true ? Json(new { Success = true }) : Json(new { Success = false });
         }
 
         [Route("listUsers")]

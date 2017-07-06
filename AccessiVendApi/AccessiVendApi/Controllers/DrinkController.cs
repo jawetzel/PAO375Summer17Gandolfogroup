@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AccessiVendApi.DB;
 using AccessiVendApi.DB.Tables;
+using AccessiVendApi.Services;
 using AccessiVendApi.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,39 +15,52 @@ namespace AccessiVendApi.Controllers
     [Route("api/Drink")]
     public class DrinkController : Controller
     {
-        private readonly CoreContext _context;
+        private readonly DrinkServices _drinkServ;
 
-        public DrinkController(CoreContext context)
+        public DrinkController(DrinkServices drinkServ)
         {
-            _context = context;
+            _drinkServ = drinkServ;
         }
 
+        [Route("listAllDrinkOrders")]
+        [HttpGet]
+        public JsonResult ListAllDrinkOrders()
+        {
+            return Json(new { Success = true, Orders = _drinkServ.ListAllDrinkOrders() });
+        }
+        [Route("listUnpaidDrinkOrders")]
+        [HttpGet]
+        public JsonResult UnpaidDrinkOrders()
+        {
+            return Json(new { Success = true, Orders = _drinkServ.ListOfUnpaidDrinkOrders() });
+        }
+        [Route("drinkOrdersByType")]
+        [HttpPost]
+        public JsonResult DrinkOrdersByType([FromBody]string type)
+        {
+            return Json(new { Success = true, Orders =_drinkServ.ListDrinkOrdersByDrinkTypeName(type) });
+        }
 
+        [Route("drinkOrdersByUserName")]
+        [HttpPost]
+        public JsonResult DrinkOrdersByUserName([FromBody]string name)
+        {
+            return Json(new { Success = true, Orders = _drinkServ.ListDrinkOrdersByUserName(name) });
+        }
+
+        [Route("unpaidDrinkOrdersByUserName")]
+        [HttpPost]
+        public JsonResult UnpaidDrinkOrdersByUserName([FromBody]string name)
+        {
+            return Json(new { Success = true, Orders = _drinkServ.ListOfUnpaidDrinkOrdersByName(name) });
+        }
         [Route("buyDrink")]
         [HttpPost]
         public JsonResult OrderDrink([FromBody]BuyDrink order)
         {
-            try
-            {
-                var user = _context.Users.First(currUser => currUser.Name.Contains(order.Name));
-                var drinkType = _context.DrinkTypes.First(type => type.Description.Contains(order.DrinkType));
-                _context.DrinkOrders.Add(new DrinkOrder()
-                {
-                    DrinkType = drinkType,
-                    DrinkTypeId = drinkType.Id,
-                    OrderTime = DateTime.UtcNow,
-                    User = user,
-                    UserId = user.Id
-                });
-                _context.SaveChanges();
-                return Json(new { Success = true });
-            }
-            catch (Exception)
-            {
-                return Json(new { Success = false });
-
-            }
+            return _drinkServ.BuyDrink(order) == null ? Json(new {Success = false}) : Json(new {Success = true});
         }
+
 
     }
 }

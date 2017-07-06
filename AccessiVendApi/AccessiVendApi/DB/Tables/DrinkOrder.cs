@@ -12,7 +12,7 @@ namespace AccessiVendApi.DB.Tables
         [Key]
         public int Id { get; set; }
         public DateTime OrderTime { get; set; }
-
+        public bool Paid { get; set; }
     
         [ForeignKey("User")]
         public int UserId { get; set; }

@@ -31,6 +31,7 @@ namespace AccessiVendApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<CoreContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //services.AddDbContext<CoreContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LiveConnection")));
 
             services.AddScoped<UserServices>();
             services.AddScoped<DrinkServices>();

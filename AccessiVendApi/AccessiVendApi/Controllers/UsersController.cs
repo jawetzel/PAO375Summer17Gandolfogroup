@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AccessiVendApi.DB;
 using AccessiVendApi.DB.Tables;
+using AccessiVendApi.Services;
 using AccessiVendApi.ViewModels;
 
 namespace AccessiVendApi.Controllers
@@ -15,66 +16,67 @@ namespace AccessiVendApi.Controllers
     [Route("api/Users")]
     public class UsersController : Controller
     {
-        private readonly CoreContext _context;
+        private readonly UserServices _userServ;
 
-        public UsersController(CoreContext context)
+        public UsersController(UserServices userServ)
         {
-            _context = context;
+            _userServ = userServ;
         }
 
         [Route("listUsers")]
         [HttpGet]
         public JsonResult GetUsers()
         {
-            try
-            {
-                return Json(new { Success = true, Users = _context.Users.Where(user => user != null).ToList() });
-            }
-            catch (Exception)
-            {
-                return Json(new { Success = false });
-            }
+            var users = _userServ.GetListOfAllUsers();
+            return users == null ? Json(new {Success = false}) : Json(new { Success = true, Users = users });
         }
 
-        [Route("getUser")]
+        [Route("getUserName")]
         [HttpPost]
         public JsonResult GetUserByName([FromBody]string name)
         {
-            try
-            {
-                return Json(new { Success = true, User = _context.Users.First(currUser => currUser.Name.Contains(name))});
-            }
-            catch (Exception)
-            {
-                return Json(new { Success = false });
-
-            }
+            var user = _userServ.GetUserByName(name);
+            return user == null ? Json(new {Success = false}) : Json(new {Success = true, Users = user});
         }
 
-        [Route("buyDrink")]
+        [Route("getUserFaceId")]
         [HttpPost]
-        public JsonResult OrderDrink([FromBody]BuyDrink order)
+        public JsonResult GetUserByFaceId([FromBody]string faceId)
         {
-            try
-            {
-                var user = _context.Users.First(currUser => currUser.Name.Contains(order.Name));
-                var drinkType = _context.DrinkTypes.First(type => type.Description.Contains(order.DrinkType));
-                _context.DrinkOrders.Add(new DrinkOrder()
-                {
-                    DrinkType = drinkType,
-                    DrinkTypeId = drinkType.Id,
-                    OrderTime = DateTime.UtcNow,
-                    User = user,
-                    UserId = user.Id
-                });
-                _context.SaveChanges();
-                return Json(new { Success = true });
-            }
-            catch (Exception)
-            {
-                return Json(new { Success = false });
+            var user = _userServ.GetUserByFaceId(faceId);
+            return user == null ? Json(new { Success = false }) : Json(new { Success = true, Users = user });
+        }
 
-            }
+        [Route("getUserById")]
+        [HttpPost]
+        public JsonResult GetUserById([FromBody]int id)
+        {
+            var user = _userServ.GetUserById(id);
+            return user == null ? Json(new { Success = false }) : Json(new { Success = true, Users = user });
+        }
+
+        [Route("createUser")]
+        [HttpPost]
+        public JsonResult CreateUser([FromBody]User user)
+        {
+            var newUser = _userServ.CreateUser(user);
+            return newUser == null ? Json(new { Success = false }) : Json(new { Success = true, Users = newUser });
+        }
+
+        [Route("updateUser")]
+        [HttpPost]
+        public JsonResult UpdateUser([FromBody]User user)
+        {
+            var newUser = _userServ.UpdateUser(user);
+            return newUser == null ? Json(new { Success = false }) : Json(new { Success = true, Users = newUser });
+        }
+
+        [Route("deleteUser")]
+        [HttpPost]
+        public JsonResult DeleteUser([FromBody]User user)
+        {
+            var success = _userServ.DeleteUser(user);
+            return success == false ? Json(new { Success = false }) : Json(new { Success = true });
         }
     }
 }

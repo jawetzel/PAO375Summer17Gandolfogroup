@@ -12,8 +12,7 @@ namespace AccessiVendApi.DB.Tables
         public int Id { get; set; }
         public string Name { get; set; }
         public string PreviousOrder { get; set; }
-
-        // face info here for lookup
+        public string FaceId { get; set; }
 
         public ICollection<DrinkOrder> DrinkOrders { get; set; }
     }

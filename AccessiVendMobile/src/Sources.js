@@ -1,1 +1,1 @@
-export const AccessiVendApiUrl = 'https://accessivendapi.azurewebsites.net/api/';
+export const AccessiVendApiUrl = 'http://localhost:58976/api/';

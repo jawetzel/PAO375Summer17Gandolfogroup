@@ -3,7 +3,8 @@ import {StyleSheet, Text, View, Image, Dimensions, Platform, TextInput, Button} 
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
 import {UpdateSiteSettings} from "../actions/index";
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {styles} from "../styles";
+import {ListAllUsers, LoginAdmin} from '../ApiCalls/AccessiVendApi';
 
 class Login extends Component {
     constructor(props) {
@@ -16,6 +17,16 @@ class Login extends Component {
     }
 
     login(){
+        ListAllUsers().end((res, err) => {
+            console.log(res);
+            console.log(err);
+        });
+        LoginAdmin({
+            Username: this.state.username,
+            Password: this.state.password
+        }).end((res, err) => {
+            console.log(res)
+        });
         let siteSettings = Object.assign({}, this.props.SiteSettings);
         siteSettings.IsLoggedIn = true;
         siteSettings.username = this.state.username;
@@ -25,7 +36,7 @@ class Login extends Component {
 
     render() {
         return (
-            <View>
+            <View style={styles.container}>
                 <Text>Please login</Text>
                 <TextInput ref='username'
                            placeholder="Username"
@@ -68,7 +79,6 @@ class Login extends Component {
     }
 
 }
-
 
 function mapStateToProps(state) {
     return{

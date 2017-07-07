@@ -1,0 +1,1 @@
+export const AccessiVendApiUrl = 'https://accessivendapi.azurewebsites.net/api/';

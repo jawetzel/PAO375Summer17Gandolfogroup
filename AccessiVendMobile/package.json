@@ -26,6 +26,7 @@
     "react-native-router-flux": "^3.41.0",
     "react-native-vector-icons": "^4.2.0",
     "react-redux": "^5.0.5",
-    "redux": "^3.7.1"
+    "redux": "^3.7.1",
+    "request": "^2.81.0"
   }
 }

@@ -1,42 +1,43 @@
 ﻿using AccessiVendApi.Dtos;
 using Microsoft.Extensions.Options;
+using Microsoft.ProjectOxford.Face;
+using Microsoft.ProjectOxford.Face.Contract;
+using MoreLinq;
 using RestSharp;
 using System;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AccessiVendApi.Services
 {
     public class FaceServices
     {
-        private readonly IOptions<FaceApiSettings> _apiSettings;
+        private readonly string AccessKey;
+        private readonly string BaseUrl;
 
         public FaceServices(IOptions<FaceApiSettings> apiSettings)
         {
-            _apiSettings = apiSettings;
+            AccessKey = apiSettings.Value.AccessKey;
+            BaseUrl = apiSettings.Value.BaseUrl;
         }
 
-        public void DetectFace(string encodedImage, Action<string> userDetectedCallback, Action<string> noUserDetectedCallback)
+        public async Task<Face> DetectPrimaryFace(string base64EncodedImage)
         {
-            var client = new RestClient(_apiSettings.Value.BaseUrl);
-            var request = new RestRequest("detect?");
+            var client = new FaceServiceClient(AccessKey, BaseUrl);
+            var imageByteArray = Convert.FromBase64String(base64EncodedImage);
 
-            request.Method = Method.POST;
-            request.AddHeader("Content-Type", "application/octet-stream");
-            request.AddHeader("Ocp-Apim-Subscription-Key", _apiSettings.Value.AccessKey);
-            request.AddParameter("application/octet-stream", Convert.FromBase64String(encodedImage), ParameterType.RequestBody);
-
-            client.ExecuteAsync(request, response =>
+            using (var stream = new MemoryStream(imageByteArray))
             {
-                var userDetected = response.Content.TrimStart('[').TrimEnd(']').Length > 0;
-
-                if (userDetected)
+                var faces = await client.DetectAsync(stream);
+                if (faces.Any())
                 {
-                    userDetectedCallback(response.Content);
-                } else
-                {
-                    noUserDetectedCallback(response.Content);
+                    return faces.MaxBy(x => x.FaceRectangle.Height * x.FaceRectangle.Width);
                 }
-            });
+
+                return null;
+            }
         }
     }
 }

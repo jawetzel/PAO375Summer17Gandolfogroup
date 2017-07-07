@@ -20,9 +20,6 @@ namespace AccessiVendApi.Controllers
         private readonly UserServices _userServ;
         private readonly FaceServices _faceService;
 
-        Action<string> Test1 = response => { Debug.WriteLine("User Found"); };
-        Action<string> Test2 = response => { Debug.WriteLine("No User Found"); };
-
         public UsersController(UserServices userServ, FaceServices faceService)
         {
             _userServ = userServ;
@@ -31,10 +28,10 @@ namespace AccessiVendApi.Controllers
 
         [Route("testRyan")]
         [HttpPost]
-        public JsonResult TestRyan([FromBody]string encodedImage)
+        public async Task<JsonResult> TestRyan([FromBody]string encodedImage)
         {
-            _faceService.DetectFace(encodedImage, Test1, Test2);
-            return true ? Json(new { Success = true }) : Json(new { Success = false });
+            var face = await _faceService.DetectPrimaryFace(encodedImage);
+            return face == null ? Json(new { Success = false }) : Json(new { Success = true, FaceId = face.FaceId });
         }
 
         [Route("listUsers")]

@@ -1,14 +1,12 @@
-﻿using AccessiVendApi.Dtos;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using AccessiVendApi.Dtos;
 using Microsoft.Extensions.Options;
 using Microsoft.ProjectOxford.Face;
 using Microsoft.ProjectOxford.Face.Contract;
 using MoreLinq;
-using RestSharp;
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AccessiVendApi.Services
 {

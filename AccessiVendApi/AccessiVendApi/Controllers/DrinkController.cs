@@ -1,12 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AccessiVendApi.DB;
-using AccessiVendApi.DB.Tables;
 using AccessiVendApi.Services;
 using AccessiVendApi.ViewModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccessiVendApi.Controllers

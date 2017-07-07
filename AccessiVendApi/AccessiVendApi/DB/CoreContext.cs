@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AccessiVendApi.DB.Tables;
+﻿using AccessiVendApi.DB.Tables;
 using Microsoft.EntityFrameworkCore;
 
 namespace AccessiVendApi.DB

@@ -1,5 +1,5 @@
-﻿using AccessiVendApi.DB;
-using AccessiVendApi.Dtos;
+﻿using AccessiVendApi.Configuration;
+using AccessiVendApi.DB;
 using AccessiVendApi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,7 +35,7 @@ namespace AccessiVendApi
             services.AddScoped<AdminServices>();
             services.AddScoped<FaceServices>();
 
-            services.Configure<FaceApiSettings>(Configuration.GetSection("ApiSettings").GetSection("FaceApi"));
+            services.Configure<FaceApiSettings>(Configuration.GetSection("Api").GetSection("Face"));
 
             services.AddMvc();
         }

@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using AccessiVendApi.DB.Tables;
 using AccessiVendApi.Services;
@@ -16,14 +17,6 @@ namespace AccessiVendApi.Controllers
         {
             _userServ = userServ;
             _faceService = faceService;
-        }
-
-        [Route("testRyan")]
-        [HttpPost]
-        public async Task<JsonResult> TestRyan([FromBody]string encodedImage)
-        {
-            var face = await _faceService.DetectPrimaryFace(encodedImage);
-            return face == null ? Json(new { Success = false }) : Json(new { Success = true, FaceId = face.FaceId });
         }
 
         [Route("listUsers")]
@@ -55,6 +48,22 @@ namespace AccessiVendApi.Controllers
         public JsonResult GetUserById([FromBody]int id)
         {
             var user = _userServ.GetUserById(id);
+            return user == null ? Json(new { Success = false }) : Json(new { Success = true, Users = user });
+        }
+
+        [Route("getUserByImage")]
+        [HttpPost]
+        public async Task<JsonResult> GetUserByImage([FromBody]string base64EncodedImage)
+        {
+            User user = null;
+            var identifyUserResult = await _faceService.IdentifyFace(base64EncodedImage);
+
+            if (identifyUserResult.Candidates.Any())
+            {
+                var id = identifyUserResult.Candidates.Select(x => x.PersonId.ToString()).FirstOrDefault();
+                user = _userServ.GetUserByFaceId(id);
+            }
+
             return user == null ? Json(new { Success = false }) : Json(new { Success = true, Users = user });
         }
 

@@ -2,11 +2,11 @@
 # Vivado v2016.4 (64-bit)
 # SW Build 1756540 on Mon Jan 23 19:11:23 MST 2017
 # IP Build 1755317 on Mon Jan 23 20:30:07 MST 2017
-# Start of session at: Sat Jul 01 12:23:23 2017
-# Process ID: 9872
+# Start of session at: Thu Jul 06 16:37:17 2017
+# Process ID: 5436
 # Current directory: C:/Repos/School/PAO375Summer17Gandolfogroup/Labs/Lab3/alu4/alu4.runs/synth_1
-# Command line: vivado.exe -log Alu4.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source Alu4.tcl
-# Log file: C:/Repos/School/PAO375Summer17Gandolfogroup/Labs/Lab3/alu4/alu4.runs/synth_1/Alu4.vds
+# Command line: vivado.exe -log DispAlu4.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source DispAlu4.tcl
+# Log file: C:/Repos/School/PAO375Summer17Gandolfogroup/Labs/Lab3/alu4/alu4.runs/synth_1/DispAlu4.vds
 # Journal file: C:/Repos/School/PAO375Summer17Gandolfogroup/Labs/Lab3/alu4/alu4.runs/synth_1\vivado.jou
 #-----------------------------------------------------------
-source Alu4.tcl -notrace
+source DispAlu4.tcl -notrace

@@ -53,18 +53,20 @@ namespace AccessiVendApi.Controllers
 
         [Route("getUserByImage")]
         [HttpPost]
-        public async Task<JsonResult> GetUserByImage([FromBody]string base64EncodedImage)
+        public async Task<JsonResult> DetectAndIdentifyUser([FromBody]string base64EncodedImage)
         {
+            var result = await _faceService.IdentifyFace(base64EncodedImage);
+            var userDetected = result.UserDetected;
+            var candidates = result.IdentifyResult.Candidates;
             User user = null;
-            var identifyUserResult = await _faceService.IdentifyFace(base64EncodedImage);
 
-            if (identifyUserResult.Candidates.Any())
+            if (userDetected && candidates.Any())
             {
-                var id = identifyUserResult.Candidates.Select(x => x.PersonId.ToString()).FirstOrDefault();
+                var id = candidates.Select(x => x.PersonId.ToString()).FirstOrDefault();
                 user = _userServ.GetUserByFaceId(id);
             }
 
-            return user == null ? Json(new { Success = false }) : Json(new { Success = true, Users = user });
+            return Json(new { Success = user == null, UserDetected = userDetected, MatchingUser = user });
         }
 
         [Route("createUser")]

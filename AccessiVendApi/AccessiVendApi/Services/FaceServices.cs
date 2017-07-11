@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AccessiVendApi.Configuration;
+using AccessiVendApi.ViewModels;
 using Microsoft.Extensions.Options;
 using Microsoft.ProjectOxford.Face;
 using Microsoft.ProjectOxford.Face.Contract;
@@ -37,22 +38,22 @@ namespace AccessiVendApi.Services
             }
         }
 
-        public async Task<IdentifyResult> IdentifyFace(string base64EncodedImage)
+        public async Task<IdentifyUserResult> IdentifyFace(string base64EncodedImage)
         {
             var face = await DetectPrimaryFace(base64EncodedImage);
             if (face != null)
             {
                 var result = await _client.IdentifyAsync(_personGroupId, new[] { face.FaceId });
-                return result[0];
+                return new IdentifyUserResult(true, result[0]);
             }
 
-            return new IdentifyResult();
+            return new IdentifyUserResult(false, new IdentifyResult());
         }
 
-        public async Task<IdentifyResult> IdentifyFace(Guid faceId)
+        public async Task<IdentifyUserResult> IdentifyFace(Guid faceId)
         {
             var result = await _client.IdentifyAsync(_personGroupId, new[] {faceId});
-            return result[0];
+            return new IdentifyUserResult(true, result[0]);
         }
 
         public async Task<Guid> AddFaceToPerson(string base64EncodedImage, string personId)

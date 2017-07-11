@@ -24,6 +24,10 @@ export const styles = StyleSheet.create({
         fontWeight: 'bold',
         padding: 5
     },
+    mainButton: {
+        width: 500,
+        color:'#B7D433'
+    },
 
     companyContainer: {
         flex: 1,

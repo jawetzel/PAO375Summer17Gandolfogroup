@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View, Image, Dimensions, Platform, TextInput, Button, Keyboard} from 'react-native';
+import {Text, View, Image, Dimensions, Platform, TextInput, Button, Keyboard, Touchable} from 'react-native';
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
 import {UpdateSiteSettings} from "../actions/index";
@@ -81,10 +81,10 @@ class Login extends Component {
                                    password: {text}
                                });
                            }} />
-                <Button title='Login'
-                    width={200}
-                    color='#B7D433'
-                    onPress={() => this.login()}>
+                <Button style={styles.mainButton}
+                        title='Login'
+                        color='#B7D433'
+                        onPress={() => this.login()}>
                 </Button>
                 <Image source={Logo} style={styles.logoImage} />
             </View>

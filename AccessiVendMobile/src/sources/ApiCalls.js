@@ -11,5 +11,14 @@ export function LoginCall(account, callback) {
             callback(res);
         }
     })
+}
 
+export function GetPurchaces(callback) {
+    superagent.get(apiUrl + 'Drink/listAllDrinkOrders').end((err, res) => {
+       if(err){
+           console.log(err);
+       } else {
+           callback(res.body);
+       }
+    });
 }

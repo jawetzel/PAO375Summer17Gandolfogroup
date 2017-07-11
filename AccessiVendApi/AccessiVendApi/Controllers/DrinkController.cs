@@ -60,6 +60,12 @@ namespace AccessiVendApi.Controllers
         {
             return _drinkServ.BuyDrink(order) == null ? Json(new {Success = false}) : Json(new {Success = true});
         }
+        [Route("buyDrinkByUserId")]
+        [HttpPost]
+        public JsonResult OrderDrinkByUserId([FromBody]BuyDrink order)
+        {
+            return _drinkServ.BuyDrinkByUserId(order) == null ? Json(new { Success = false }) : Json(new { Success = true });
+        }
         [Route("buyDrinkFaceId")]
         [HttpPost]
         public JsonResult OrderDrinkFaceAndType([FromBody]BuyDrinkFaceAndType order)

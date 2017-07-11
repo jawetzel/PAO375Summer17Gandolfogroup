@@ -93,7 +93,29 @@ namespace AccessiVendApi.Services
             }
             
         }
+        public DrinkOrder BuyDrinkByUserId(BuyDrink order)
+        {
+            try
+            {
+                var user = _context.Users.First(person => person.Id == order.Id);
+                var drinkType = _context.DrinkTypes.First(type => type.Description.Contains(order.DrinkType));
+                var drinkOrder = new DrinkOrder()
+                {
+                    DrinkType = drinkType,
+                    DrinkTypeId = drinkType.Id,
+                    User = user,
+                    UserId = user.Id
+                };
+                _context.DrinkOrders.Add(drinkOrder);
+                _context.SaveChanges();
+                return drinkOrder;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
 
+        }
         public DrinkOrder BuyDrink(BuyDrinkFaceAndType order)
         {
             try

@@ -38,11 +38,35 @@ namespace AccessiVendApi
             services.Configure<FaceApiSettings>(Configuration.GetSection("Api").GetSection("Face"));
 
             services.AddMvc();
+            services.AddCors(o => o.AddPolicy("localHost3000", builder =>
+            {
+                builder.WithOrigins("http://localhost:3000")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();
+            }));
+            services.AddCors(o => o.AddPolicy("AllowAll", builder =>
+            {
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();
+            }));
+            services.AddCors(o => o.AddPolicy("localHost19001", builder =>
+            {
+                builder.WithOrigins("http://localhost:19001")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();
+            }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, CoreContext DbContext, AdminServices adminServ)
         {
+            app.UseCors("AllowAll");
+            app.UseCors("localHost3000");
+            app.UseCors("localHost19001");
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 

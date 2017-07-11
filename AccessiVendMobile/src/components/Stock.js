@@ -3,6 +3,7 @@ import {StyleSheet, Text, View, Image, Dimensions, Platform, TextInput} from 're
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
 import {UpdateSiteSettings} from "../actions/index";
+import {styles} from "../styles";
 
 class Stock extends Component {
     constructor(props) {
@@ -12,7 +13,7 @@ class Stock extends Component {
 
     render() {
         return (
-            <View>
+            <View style={styles.container}>
                 <Text>Stock page</Text>
             </View>
         )

@@ -3,10 +3,8 @@ import {Text, View, Image, Dimensions, Platform, TextInput, Button} from 'react-
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
 import {UpdateSiteSettings} from "../actions/index";
-
-import Styles from '../styles';
-
-import Logo from '../sources/smartFood.png';
+import {styles} from "../styles";
+import {ListAllUsers, LoginAdmin} from '../ApiCalls/AccessiVendApi';
 
 class Login extends Component {
     constructor(props) {
@@ -19,6 +17,16 @@ class Login extends Component {
     }
 
     login(){
+        ListAllUsers().end((res, err) => {
+            console.log(res);
+            console.log(err);
+        });
+        LoginAdmin({
+            Username: this.state.username,
+            Password: this.state.password
+        }).end((res, err) => {
+            console.log(res)
+        });
         let siteSettings = Object.assign({}, this.props.SiteSettings);
         siteSettings.IsLoggedIn = true;
         siteSettings.username = this.state.username;
@@ -28,10 +36,9 @@ class Login extends Component {
 
     render() {
         return (
-            <View style={Styles.container}>
-                <TextInput style={Styles.textField}
-                           underlineColorAndroid="transparent"
-                           ref='username'
+            <View style={styles.container}>
+                <Text>Please login</Text>
+                <TextInput ref='username'
                            placeholder="Username"
                            placeholderTextColor="black"
                            keyboardType="default"
@@ -74,7 +81,6 @@ class Login extends Component {
     }
 
 }
-
 
 function mapStateToProps(state) {
     return{

@@ -10,7 +10,7 @@ import {Actions} from 'react-native-router-flux';
 import {UpdateSiteSettings} from "../actions/index";
 import Login from "./Login";
 import Stock from "./Stock";
-import Finances from "./Finances";
+import Purchases from "./Purchases";
 import Users from "./Users";
 import Menu from "./Menu";
 
@@ -25,9 +25,9 @@ const Scenes = Actions.create(
                        component={Users}
                        title='AccessiVend' iconName='ios-home-outline'/>
 
-                <Scene key='finances'
-                       component={Finances}
-                       title='Home' iconName='ios-home-outline'/>
+                <Scene key='purchases'
+                       component={Purchases}
+                       title='Purchases' iconName='ios-home-outline'/>
 
                 <Scene key='stock'
                        component={Stock}

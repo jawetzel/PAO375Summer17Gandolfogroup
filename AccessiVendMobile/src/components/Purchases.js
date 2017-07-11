@@ -4,10 +4,14 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
 import {UpdateSiteSettings} from "../actions/index";
 import {styles} from "../styles";
+import {GetPurchaces} from "../sources/ApiCalls";
 
-class Finances extends Component {
+class Purchases extends Component {
     constructor(props) {
         super(props);
+        GetPurchaces(answer => {
+            console.log(answer);
+        });
     }
 
 
@@ -35,4 +39,4 @@ function mapDispatchToProps(dispatch) {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Finances);
+export default connect(mapStateToProps, mapDispatchToProps)(Purchases);

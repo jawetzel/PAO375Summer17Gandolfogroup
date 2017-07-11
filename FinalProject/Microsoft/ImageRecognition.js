@@ -1,6 +1,5 @@
 var fs = require('fs');
 var path = require('path');
-var request = require('superagent');
 var Camera = require('raspicam');
 
 var camera = new Camera({
@@ -13,9 +12,9 @@ var camera = new Camera({
     timeout: 1
 });
 
-function CheckForUser(resolve, reject) {
+function GetEncodedImage(resolve, reject) {
     return CaptureImage().then(function () {
-        return sendImage();
+        return EncodeImage();
     });
 };
 
@@ -27,30 +26,16 @@ function CaptureImage() {
     });
 };
 
-function sendImage() {
-    var config = {
-        url: 'https://eastus2.api.cognitive.microsoft.com/face/v1.0/detect?',
-        payload: getBase64EncodedImage(),
-        headers: {
-            'Content-Type': 'application/octet-stream',
-            'Ocp-Apim-Subscription-Key': 'e6af69c32d9f437abb6e90456bf0b068'
-        }
-    };
+function EncodeImage() {
+    var imagePath = `Temp/image.jpg`;
+    var bitmap = fs.readFileSync(imagePath);
+    var buffer = new Buffer(bitmap);
+    var encodedImage = buffer.toString('base64');
 
-    return request
-        .post(config.url)
-        .send(config.payload)
-        .set(config.headers);
+    return JSON.stringify(encodedImage);
+}
 
-
-    function getBase64EncodedImage() {
-        var imagePath = `Temp/image.jpg`;
-        var image = fs.readFileSync(imagePath);
-        return image;
-    }
-};
-
-module.exports = { CheckForUser: CheckForUser };
+module.exports = { GetEncodedImage: GetEncodedImage };
 
 
 

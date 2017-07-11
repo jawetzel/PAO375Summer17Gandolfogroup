@@ -1,8 +1,7 @@
 var PinAccess = require('./GpioPins/PinInteraction');
-var ImageRecognition = require('./Microsoft/ImageRecognition');
 var Speech = require('./Microsoft/Speech');
-var ApiCalls = require('./ApiCalls/AccessiVendApiCalls');
-//Speech.FetchToken();
+ var APIService = require('./ApiCalls/AccessiVendApiCalls');
+Speech.FetchToken();
 
 ApiCalls.ChargeCustomer('hel;p', function (response) {
     console.log(response);
@@ -15,11 +14,11 @@ var Count = {
 };
 
 var loopCheck = function () {  //main loop
-    ImageRecognition.CheckForUser().then(resolve, reject);
+    APIService.IdentifyUser().then(resolve, reject);
 
     function resolve(response) {
-        var userFound = response.body.length > 0;
-        if (userFound) {
+        var userDetected = response.body.userDetected;
+        if (userDetected) {
             Speech.Conversation(Count, function (callback) {
                 console.log('Success = ' + callback);
                 setTimeout(function () {

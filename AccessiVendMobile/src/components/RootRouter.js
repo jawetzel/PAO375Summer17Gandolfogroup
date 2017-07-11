@@ -39,7 +39,7 @@ const Scenes = Actions.create(
                    component={Menu}
                    title='Menu' iconName='ios-home-outline'/>
 
-            <Scene key='login' direction='vertical'>
+            <Scene key='login' direction='vertical'  hideNavBar={true}>
                 <Scene key='loginModal'
                        component={Login}
                        title='AcessiVend'

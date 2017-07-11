@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, Image, Dimensions, Platform, TextInput, Button} from 'react-native';
+import {Text, View, Image, Dimensions, Platform, TextInput, Button} from 'react-native';
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
 import {UpdateSiteSettings} from "../actions/index";
-import Icon from 'react-native-vector-icons/FontAwesome';
+
+import Styles from '../styles';
+
+import Logo from '../sources/smartFood.png';
 
 class Login extends Component {
     constructor(props) {
@@ -25,9 +28,10 @@ class Login extends Component {
 
     render() {
         return (
-            <View>
-                <Text>Please login</Text>
-                <TextInput ref='username'
+            <View style={Styles.container}>
+                <TextInput style={Styles.textField}
+                           underlineColorAndroid="transparent"
+                           ref='username'
                            placeholder="Username"
                            placeholderTextColor="black"
                            keyboardType="default"
@@ -41,7 +45,9 @@ class Login extends Component {
                                    username: {text}
                                });
                            }} />
-                <TextInput ref='password'
+                <TextInput style={Styles.textField}
+                           underlineColorAndroid="transparent"
+                           ref='password'
                            placeholder="Password"
                            placeholderTextColor="black"
                            keyboardType="default"
@@ -59,10 +65,10 @@ class Login extends Component {
                            }} />
                 <Button title='Login'
                     width={200}
-                    backgroundColor='#3b5998'
+                    color='#B7D433'
                     onPress={() => this.login()}>
                 </Button>
-
+                <Image source={Logo} style={Styles.logoImage} />
             </View>
         )
     }

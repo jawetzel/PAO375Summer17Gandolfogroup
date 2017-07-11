@@ -5,7 +5,7 @@ import {bindActionCreators} from "redux";
 import {UpdateSiteSettings} from "../actions/index";
 import {styles} from "../styles";
 
-class Finances extends Component {
+class Purchases extends Component {
     constructor(props) {
         super(props);
     }
@@ -35,4 +35,4 @@ function mapDispatchToProps(dispatch) {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Finances);
+export default connect(mapStateToProps, mapDispatchToProps)(Purchases);

@@ -5,6 +5,9 @@ let DefaultSiteSettings = {
     IsLoggedIn: false,
     Username: '',
 
+    NeedAccessFinances: false,
+    NeedAccessUsers: false,
+    NeedAccessStock: false
 };
 
 export default function (state = DefaultSiteSettings, action) {

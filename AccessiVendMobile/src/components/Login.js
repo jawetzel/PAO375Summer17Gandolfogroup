@@ -1,44 +1,54 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, Image, Dimensions, Platform, TextInput, Button} from 'react-native';
+import {Text, View, Image, Dimensions, Platform, TextInput, Button, Keyboard} from 'react-native';
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
 import {UpdateSiteSettings} from "../actions/index";
-import {styles} from "../styles";
-import {ListAllUsers, LoginAdmin} from '../ApiCalls/AccessiVendApi';
+import {styles} from '../styles';
+
+import Logo from '../sources/smartFood.png';
+import {LoginCall} from "../sources/ApiCalls";
+
 
 class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: '',
-            password: '',
+            username: {text: ''},
+            password: {text: ''},
+            showErrorMessage: false
         };
         this.login = this.login.bind(this);
     }
 
     login(){
-        ListAllUsers().end((res, err) => {
-            console.log(res);
-            console.log(err);
-        });
-        LoginAdmin({
-            Username: this.state.username,
-            Password: this.state.password
-        }).end((res, err) => {
-            console.log(res)
-        });
-        let siteSettings = Object.assign({}, this.props.SiteSettings);
-        siteSettings.IsLoggedIn = true;
-        siteSettings.username = this.state.username;
-        this.props.UpdateSiteSettings(siteSettings);
+        let username = this.state.username.text.trim();
+        let password = this.state.password.text.trim();
+        if(username.length > 0 && password.length > 0){
+            LoginCall({Username: username, Password: password}, response => {
+                if(!response.body.success){
+                    this.setState({showErrorMessage: true});
+                    this.setState({password: {text: ''}});
+                } else {
+                    Keyboard.dismiss();
+                    let siteSettings = Object.assign({}, this.props.SiteSettings);
+                    siteSettings.IsLoggedIn = true;
+                    siteSettings.username = this.state.username;
+                    siteSettings.token = response.body.session.token;
+                    this.props.UpdateSiteSettings(siteSettings);
+                }
+            });
+        }
     }
-
 
     render() {
         return (
             <View style={styles.container}>
-                <Text>Please login</Text>
-                <TextInput ref='username'
+                {this.state.showErrorMessage &&
+                <Text style={styles.ErrorMessage}>Login Failed</Text>
+                }
+                <TextInput style={styles.textField}
+                           underlineColorAndroid="transparent"
+                           ref='username'
                            placeholder="Username"
                            placeholderTextColor="black"
                            keyboardType="default"
@@ -52,7 +62,9 @@ class Login extends Component {
                                    username: {text}
                                });
                            }} />
-                <TextInput ref='password'
+                <TextInput style={styles.textField}
+                           underlineColorAndroid="transparent"
+                           ref='password'
                            placeholder="Password"
                            placeholderTextColor="black"
                            keyboardType="default"
@@ -63,6 +75,7 @@ class Login extends Component {
                            marginBottom={20}
                            autoCapitalize="none"
                            autoCorrect={false}
+                           value={this.state.password.text}
                            onChangeText={(text) => {
                                this.setState({
                                    password: {text}
@@ -70,10 +83,10 @@ class Login extends Component {
                            }} />
                 <Button title='Login'
                     width={200}
-                    backgroundColor='#3b5998'
+                    color='#B7D433'
                     onPress={() => this.login()}>
                 </Button>
-
+                <Image source={Logo} style={styles.logoImage} />
             </View>
         )
     }

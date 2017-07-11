@@ -4,7 +4,9 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
 import {UpdateSiteSettings} from "../actions/index";
 import {Actions} from 'react-native-router-flux';
-import {styles} from "../styles";
+
+import {styles} from '../styles';
+
 class Menu extends Component {
     constructor(props) {
         super(props);
@@ -14,10 +16,10 @@ class Menu extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Button title='Finances'
+                <Button title='Purchases'
                         width={200}
                         backgroundColor='#3b5998'
-                        onPress={() => Actions.finances()}/>
+                        onPress={() => Actions.purchases()}/>
                 <Button title='Users'
                         width={200}
                         backgroundColor='#3b5998'

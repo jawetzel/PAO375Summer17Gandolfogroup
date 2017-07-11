@@ -25,9 +25,9 @@ const Scenes = Actions.create(
                        component={Users}
                        title='AccessiVend' iconName='ios-home-outline'/>
 
-                <Scene key='finances'
+                <Scene key='purchases'
                        component={Finances}
-                       title='Home' iconName='ios-home-outline'/>
+                       title='Purchases' iconName='ios-home-outline'/>
 
                 <Scene key='stock'
                        component={Stock}
@@ -39,7 +39,7 @@ const Scenes = Actions.create(
                    component={Menu}
                    title='Menu' iconName='ios-home-outline'/>
 
-            <Scene key='login' direction='vertical'>
+            <Scene key='login' direction='vertical'  hideNavBar={true}>
                 <Scene key='loginModal'
                        component={Login}
                        title='AcessiVend'

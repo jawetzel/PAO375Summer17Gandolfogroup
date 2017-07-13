@@ -46,9 +46,22 @@ namespace AccessiVendApi.Services
            
         }
 
-        public List<DrinkOrder> ListAllDrinkOrders()
+        public List<DrinkOrderReturnModel> ListAllDrinkOrders()
         {
-            return _context.DrinkOrders.Where(order => order != null).ToList();
+            var returnObject = _context.DrinkOrders.Where(order => order != null).ToList();
+            var returnList = new List<DrinkOrderReturnModel>();
+            foreach (var item in returnObject)
+            {
+                returnList.Add(new DrinkOrderReturnModel()
+                {
+                    Id = item.Id,
+                    DrinkTypeId = item.DrinkTypeId,
+                    DrinkTypeDescr = _context.DrinkTypes.First(type => type.Id == item.DrinkTypeId).Description,
+                    UserId = item.UserId,
+                    UserName = _context.Users.First(user => user.Id == item.UserId).Name
+                });
+            }
+            return returnList;
         }
 
         public List<DrinkOrder> ListDrinkOrdersByUserName(string name)

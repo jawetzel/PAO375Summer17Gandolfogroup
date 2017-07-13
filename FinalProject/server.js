@@ -3,10 +3,6 @@ var Speech = require('./Microsoft/Speech');
  var APIService = require('./ApiCalls/AccessiVendApiCalls');
 Speech.FetchToken();
 
-ApiCalls.ChargeCustomer('hel;p', function (response) {
-    console.log(response);
-});
-
 var Count = {
     Pepsi: 3,
     MistTwist: 3,
@@ -17,6 +13,9 @@ var loopCheck = function () {  //main loop
     APIService.IdentifyUser().then(resolve, reject);
 
     function resolve(response) {
+        console.log('response');
+        console.log(response.body);
+
         var userDetected = response.body.userDetected;
         if (userDetected) {
             Speech.Conversation(Count, function (callback) {
@@ -36,7 +35,7 @@ var loopCheck = function () {  //main loop
         console.log('API Request Failed');
     }
 };
-//loopCheck();
+loopCheck();
 
 
 

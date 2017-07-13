@@ -1,5 +1,5 @@
 var request = require("request");
-var superagent = require("superagent");
+var superAgent = require("superagent");
 var imageRecognition = require("../Microsoft/ImageRecognition");
 
 var uriBase = 'http://accessivendapi.azurewebsites.net/api';
@@ -12,10 +12,13 @@ var ChargeCustomer = function(body, callback){
 };
 
 var IdentifyUser = function() {
-    return superAgent.post(uriBase + '/Users/detectAndIdentifyUser')
-        .send(imageRecognition.GetEncodedImage())
+    console.log('attempting');
+    var image = imageRecognition.GetEncodedImage();
+    console.log(image);
+    return superAgent.post(uriBase + '/Users/getUserByImage')
+        .send(image)
         .set('accept', 'application/json');
-}
+};
 
 var ApiCall = function (url, body, callback) {
     var options = {
@@ -36,5 +39,6 @@ var ApiCall = function (url, body, callback) {
 
 
 module.exports = {
-    ChargeCustomer: ChargeCustomer
+    ChargeCustomer: ChargeCustomer,
+    IdentifyUser: IdentifyUser
 };

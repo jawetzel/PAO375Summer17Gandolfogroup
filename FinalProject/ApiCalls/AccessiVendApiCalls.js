@@ -2,15 +2,17 @@ var request = require("request");
 var superagent = require("superagent");
 var imageRecognition = require("./Microsoft/ImageRecognition");
 
+var uriBase = 'http://accessivendapi.azurewebsites.net/api';
+
 var ChargeCustomer = function(body, callback){
     var myBody = { Name: 'Joshua', DrinkType: 'Pepsi' };
-    ApiCall('http://localhost:58976/api/Users/buyDrink', myBody, function (response) {
+    ApiCall(uriBase + '/Users/buyDrink', myBody, function (response) {
         callback(response);
     });
 };
 
 var IdentifyUser = function() {
-    return superAgent.post('http://localhost:58976/api/Users/detectAndIdentifyUser')
+    return superAgent.post(uriBase + '/Users/detectAndIdentifyUser')
         .send(imageRecognition.GetEncodedImage())
         .set('accept', 'application/json');
 }

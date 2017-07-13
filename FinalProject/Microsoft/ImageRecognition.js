@@ -1,6 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 var Camera = require('raspicam');
+var superAgent = require('superagent');
 
 var camera = new Camera({
     mode: 'photo',
@@ -12,11 +13,12 @@ var camera = new Camera({
     timeout: 1
 });
 
-function GetEncodedImage(resolve, reject) {
-    return CaptureImage().then(function () {
-        return EncodeImage();
+
+function GetEncodedImage(callback) {
+    CaptureImage().then(function () {
+        callback(EncodeImage().match(new RegExp('.{1,2000}', 'g')));
     });
-};
+}
 
 function CaptureImage() {
     return new Promise(function (resolve, reject) {
@@ -24,7 +26,7 @@ function CaptureImage() {
         camera.on('exit', resolve);
         camera.start();
     });
-};
+}
 
 function EncodeImage() {
     var imagePath = `Temp/image.jpg`;

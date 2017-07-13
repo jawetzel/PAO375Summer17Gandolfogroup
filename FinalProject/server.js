@@ -10,29 +10,26 @@ var Count = {
 };
 
 var loopCheck = function () {  //main loop
-    APIService.IdentifyUser().then(resolve, reject);
-
-    function resolve(response) {
-        console.log('response');
-        console.log(response.body);
-
-        var userDetected = response.body.userDetected;
-        if (userDetected) {
-            Speech.Conversation(Count, function (callback) {
-                console.log('Success = ' + callback);
-                setTimeout(function () {
-                    loopCheck();
-                }, 5000);
-            });
+    APIService.IdentifyUser(function(result){
+        console.log(result.body);
+        if(result.body.matchingUser !== null){
+            resolve(result.body.matchingUser);
         } else {
             setTimeout(function () {
                 loopCheck();
             }, 3000);
         }
-    }
+    });
 
-    function reject() {
-        console.log('API Request Failed');
+    function resolve(response) {
+        console.log('response');
+        console.log(response);
+        Speech.Conversation(Count, response, function (callback) {
+            console.log('Success = ' + callback);
+            setTimeout(function () {
+                loopCheck();
+            }, 5000);
+        });
     }
 };
 loopCheck();

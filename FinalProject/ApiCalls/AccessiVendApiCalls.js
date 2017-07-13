@@ -2,7 +2,7 @@ var request = require("request");
 var superAgent = require("superagent");
 var imageRecognition = require("../Microsoft/ImageRecognition");
 
-var uriBase = 'http://accessivendapi.azurewebsites.net/api';
+var uriBase = 'http://53e4c19b.ngrok.io/api';
 
 var ChargeCustomer = function(body, callback){
     var myBody = { Name: 'Joshua', DrinkType: 'Pepsi' };
@@ -11,11 +11,12 @@ var ChargeCustomer = function(body, callback){
     });
 };
 
-var IdentifyUser = function() {
-    return imageRecognition.GetEncodedImage().then(function (image) {
-        return superAgent.post(uriBase + '/Users/getUserByImage')
-                .send(image)
-                .set('accept', 'application/json');
+var IdentifyUser = function(callback) {
+    imageRecognition.GetEncodedImage(function (image) {
+        return superAgent.post('https://901ac009.ngrok.io/api/Users/getUserByImage')
+                .send(image).end(function(err, res){
+                callback(res);
+            });
     });
 };
 

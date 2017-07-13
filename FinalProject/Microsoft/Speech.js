@@ -11,7 +11,7 @@ var Key = '248162ed0e48475aa055127f1fda4e76';
 
 var AccessToken = '';
 
-var Conversation = function (count, callback) {
+var Conversation = function (count, matchingUser, callback) {
     BeginConversation(count, function (intent) {
         console.log(intent);
         switch(intent){
@@ -22,6 +22,10 @@ var Conversation = function (count, callback) {
             case 'Pepsi': {
                 var exitAudio = new Sound('End.wav');
                 exitAudio.play();
+                var drinkOrder = {
+                    DrinkType: 'Pspsi',
+                    Id: ''
+                };
                 console.log('hit pepsi');
                 count.Pepsi--;
                 PinInteraction.ActavatePepsiPin();

@@ -12,12 +12,11 @@ var ChargeCustomer = function(body, callback){
 };
 
 var IdentifyUser = function() {
-    console.log('attempting');
-    var image = imageRecognition.GetEncodedImage();
-    console.log(image);
-    return superAgent.post(uriBase + '/Users/getUserByImage')
-        .send(image)
-        .set('accept', 'application/json');
+    return imageRecognition.GetEncodedImage().then(function (image) {
+        return superAgent.post(uriBase + '/Users/getUserByImage')
+                .send(image)
+                .set('accept', 'application/json');
+    });
 };
 
 var ApiCall = function (url, body, callback) {

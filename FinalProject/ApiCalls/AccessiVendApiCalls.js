@@ -1,6 +1,6 @@
 var request = require("request");
 var superagent = require("superagent");
-var imageRecognition = require("./Microsoft/ImageRecognition");
+var imageRecognition = require("../Microsoft/ImageRecognition");
 
 var uriBase = 'http://accessivendapi.azurewebsites.net/api';
 

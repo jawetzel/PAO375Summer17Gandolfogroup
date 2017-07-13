@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 using AccessiVendApi.DB.Tables;
 using AccessiVendApi.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore.Internal;
+using System.Diagnostics;
 
 namespace AccessiVendApi.Controllers
 {
@@ -53,8 +56,11 @@ namespace AccessiVendApi.Controllers
 
         [Route("getUserByImage")]
         [HttpPost]
-        public async Task<JsonResult> DetectAndIdentifyUser([FromBody]string base64EncodedImage)
+        public async Task<JsonResult> DetectAndIdentifyUser([FromBody]List<string> encodedList)
         {
+            var base64EncodedImage = string.Join("", encodedList).Remove(0, 1);
+            base64EncodedImage = base64EncodedImage.Remove(base64EncodedImage.Length - 1);
+
             var result = await _faceService.IdentifyFace(base64EncodedImage);
             var userDetected = result.UserDetected;
             var candidates = result.IdentifyResult.Candidates;

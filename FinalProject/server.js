@@ -1,6 +1,6 @@
 var PinAccess = require('./GpioPins/PinInteraction');
 var Speech = require('./Microsoft/Speech');
- var APIService = require('./ApiCalls/AccessiVendApiCalls');
+var APIService = require('./ApiCalls/AccessiVendApiCalls');
 Speech.FetchToken();
 
 ApiCalls.ChargeCustomer('hel;p', function (response) {

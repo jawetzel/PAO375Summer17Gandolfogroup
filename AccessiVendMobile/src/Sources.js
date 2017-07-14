@@ -1,1 +1,0 @@
-export const AccessiVendApiUrl = 'http://localhost:58976/api/';

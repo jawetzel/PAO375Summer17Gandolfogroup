@@ -12,12 +12,27 @@ class App extends Component {
         this.Logout = this.Logout.bind(this);
         this.LoadOrders = this.LoadOrders.bind(this);
 
-        this.state = {
-            LoggedIn: false,
-            username: '',
-            password: '',
-            sessionToken: '',
-            orders: []
+
+
+        let token  = localStorage.getItem('token');
+        console.log(token);
+        if(token){
+            this.state = {
+                LoggedIn: true,
+                username: '',
+                password: '',
+                sessionToken: token,
+                orders: []
+            };
+            this.LoadOrders();
+        } else {
+            this.state = {
+                LoggedIn: false,
+                username: '',
+                password: '',
+                sessionToken: '',
+                orders: []
+            };
         }
     }
 
@@ -41,6 +56,7 @@ class App extends Component {
                         LoggedIn: true
                     });
                     self.LoadOrders();
+                    localStorage.setItem('token', body.session.token);
                 }
             });
         }
@@ -53,6 +69,8 @@ class App extends Component {
             LoggedIn: false,
             orders: []
         });
+        localStorage.clear();
+        window.location.reload();
     }
 
     LoadOrders(){
@@ -83,8 +101,10 @@ class App extends Component {
             return (
                 <div className="container App centerContents">
                     <div className="loginContainer block centerContents fullSize">
-                        <img className="IconImage" src={SmartFoodImage}/>
                         <div>
+                            <div className="titleName">
+                                AccessiVend
+                            </div>
                             <div>
                                 <input type="text"
                                        className="loginInput centerContents"
@@ -104,6 +124,7 @@ class App extends Component {
                                         className="loginInput centerContents loginButton">Login</button>
                             </div>
                         </div>
+                        <img className="IconImage" src={SmartFoodImage}/>
                     </div>
                 </div>
             );
@@ -112,6 +133,10 @@ class App extends Component {
             <div className="container App centerContents appContainer">
                 <div className="block centerContents fullSize">
                     <div className="customTable">
+                        <div>
+                            <button className="ordersButton" onClick={this.Logout}>Logout</button>
+                            <button className="ordersButton" onClick={this.LoadOrders}>Reload Orders</button>
+                        </div>
                         <table className="table table-striped">
                             <thead>
                             <tr>

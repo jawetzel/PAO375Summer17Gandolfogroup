@@ -28,7 +28,7 @@ class App extends Component {
                 method: 'POST',
                 url: 'http://accessivendapi.azurewebsites.net/api/Admin/login',
                 headers: { 'content-type': 'application/json' },
-                body: { Username: 'jawetzel', Password: 'icewater' },
+                body: { Username: this.state.username.trim().toLowerCase(), Password: this.state.password.trim() },
                 json: true
             };
             let self = this;
@@ -71,6 +71,9 @@ class App extends Component {
                 console.log('err');
                 self.setState({error: true, errorMessage: 'connection error'});
             }
+            setTimeout(() => {
+                self.LoadOrders();
+            }, 3000)
         });
 
     }
@@ -114,6 +117,7 @@ class App extends Component {
                             <tr>
                                 <th className="centerContents">Name</th>
                                 <th className="centerContents">Drink</th>
+                                <th className="centerContents">Price</th>
                             </tr>
 
                             </thead>
@@ -122,9 +126,10 @@ class App extends Component {
                             {this.state.orders.map((order, key)=> {
                                 return (
                                     <tr key={key}>
-                                    <td>{order.userName}</td>
-                                    <td>{order.drinkTypeDescr}</td>
-                                </tr>)
+                                        <td>{order.userName}</td>
+                                        <td>{order.drinkTypeDescr}</td>
+                                        <td>{order.price}</td>
+                                    </tr>)
                             })}
 
                             </tbody>

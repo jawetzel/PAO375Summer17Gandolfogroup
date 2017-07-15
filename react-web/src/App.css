@@ -62,7 +62,7 @@ body > div {
 }
 
 .IconImage{
-  margin: 30px;
+  margin: 50px;
   width: calc(100vh * .4);
 }
 
@@ -72,7 +72,7 @@ body > div {
 
 .customTable{
   background-color: white;
-  max-width: 300px;
+  max-width: 350px;
   margin: auto;
   margin-top: 35px;
 }

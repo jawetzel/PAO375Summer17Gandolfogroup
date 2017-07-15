@@ -13,5 +13,6 @@ namespace AccessiVendApi.ViewModels
         public string UserName { get; set; }
         public int DrinkTypeId { get; set; }
         public string DrinkTypeDescr { get; set; }
+        public double Price { get; set; }
     }
 }

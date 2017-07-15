@@ -58,7 +58,8 @@ namespace AccessiVendApi.Services
                     DrinkTypeId = item.DrinkTypeId,
                     DrinkTypeDescr = _context.DrinkTypes.First(type => type.Id == item.DrinkTypeId).Description,
                     UserId = item.UserId,
-                    UserName = _context.Users.First(user => user.Id == item.UserId).Name
+                    UserName = _context.Users.First(user => user.Id == item.UserId).Name,
+                    Price = _context.DrinkTypes.First(type => type.Id == item.DrinkTypeId).Price
                 });
             }
             return returnList;

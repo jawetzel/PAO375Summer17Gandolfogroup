@@ -35,3 +35,49 @@ body > div {
 .fullWidth{
   width: 100%;
 }
+
+.loginContainer{
+  background-color: #6D6E71;
+}
+
+.loginInput{
+  width: 225px;
+  border-radius: 5px;
+  font-size: larger;
+  border-width: 0;
+  margin: 5px;
+  padding: 3px;
+}
+.loginButton{
+  color: white;
+  background-color: #B4D032;
+  font-weight: bold;
+}
+.centerContents{
+  text-align: center;
+}
+
+.block{
+  display: block;
+}
+
+.IconImage{
+  margin: 30px;
+  width: calc(100vh * .4);
+}
+
+.appContainer{
+  background-color: #6D6E71;
+}
+
+.customTable{
+  background-color: white;
+  max-width: 300px;
+  margin: auto;
+  margin-top: 35px;
+}
+
+.tableBody{
+  max-height: calc(100vh - 30);
+  overflow: scroll;
+}

@@ -1,4 +1,6 @@
-﻿using AccessiVendApi.Configuration;
+﻿using System.Collections.Generic;
+using System.IO;
+using AccessiVendApi.Configuration;
 using AccessiVendApi.DB;
 using AccessiVendApi.Services;
 using Microsoft.AspNetCore.Builder;
@@ -70,7 +72,19 @@ namespace AccessiVendApi
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseMvc();
+            app.Use(async (routecontext, next) =>
+            {
+                await next();
+                if (routecontext.Response.StatusCode == 404 && !Path.HasExtension(routecontext.Request.Path.Value))
+                {
+                    routecontext.Request.Path = "/index.html";
+                    await next();
+                }
+            });
+
+            app.UseDefaultFiles(new DefaultFilesOptions { DefaultFileNames = new List<string> { "index.html" } })
+                .UseStaticFiles()
+                .UseMvc();
 
             DbInitialize.Initialize(DbContext, adminServ);
         }

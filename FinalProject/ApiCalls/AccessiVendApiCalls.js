@@ -2,18 +2,17 @@ var request = require("request");
 var superAgent = require("superagent");
 var imageRecognition = require("../Microsoft/ImageRecognition");
 
-var uriBase = 'http://53e4c19b.ngrok.io/api';
+var uriBase = 'http://0372b6ae.ngrok.io/api';
 
 var ChargeCustomer = function(body, callback){
-    var myBody = { Name: 'Joshua', DrinkType: 'Pepsi' };
-    ApiCall(uriBase + '/Users/buyDrink', myBody, function (response) {
+    ApiCall(uriBase + '/Users/buyDrink', body, function (response) {
         callback(response);
     });
 };
 
 var IdentifyUser = function(callback) {
     imageRecognition.GetEncodedImage(function (image) {
-        return superAgent.post('https://901ac009.ngrok.io/api/Users/getUserByImage')
+        return superAgent.post(uriBase + '/Users/getUserByImage')
                 .send(image).end(function(err, res){
                 callback(res);
             });

@@ -1,6 +1,7 @@
 var PinAccess = require('./GpioPins/PinInteraction');
 var Speech = require('./Microsoft/Speech');
- var APIService = require('./ApiCalls/AccessiVendApiCalls');
+var APIService = require('./ApiCalls/AccessiVendApiCalls');
+
 Speech.FetchToken();
 
 var Count = {
@@ -21,10 +22,10 @@ var loopCheck = function () {  //main loop
         }
     });
 
-    function resolve(response) {
-        console.log('response');
-        console.log(response);
-        Speech.Conversation(Count, response, function (callback) {
+    function resolve(user) {
+        console.log('User Found: ')
+        console.log(user);
+        Speech.Conversation(Count, user, function (callback) {
             console.log('Success = ' + callback);
             setTimeout(function () {
                 loopCheck();

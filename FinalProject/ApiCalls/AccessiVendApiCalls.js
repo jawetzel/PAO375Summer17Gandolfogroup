@@ -2,10 +2,10 @@ var request = require("request");
 var superAgent = require("superagent");
 var imageRecognition = require("../Microsoft/ImageRecognition");
 
-var uriBase = 'http://0372b6ae.ngrok.io/api';
+var uriBase = 'http://accessivendapi.azurewebsites.net/api';
 
 var ChargeCustomer = function(body, callback){
-    ApiCall(uriBase + '/Users/buyDrink', body, function (response) {
+    ApiCall(uriBase + '/Users/buyDrinkByUserId', body, function (response) {
         callback(response);
     });
 };

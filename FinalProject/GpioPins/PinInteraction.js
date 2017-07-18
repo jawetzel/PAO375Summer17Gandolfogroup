@@ -14,7 +14,7 @@ var ActavatePepsiPin = function(){
 };
 
 var ActavateMistTwistPin = function(){
-    activatePin(14, 2400, 600);
+    activatePin(14, 600, 2400);
 
 };
 

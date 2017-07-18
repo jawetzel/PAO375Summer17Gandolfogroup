@@ -5,16 +5,16 @@ var APIService = require('./ApiCalls/AccessiVendApiCalls');
 Speech.FetchToken();
 
 var Count = {
-    Pepsi: 3,
-    MistTwist: 3,
-    MountianDew: 3
+    Pepsi: 5,
+    MistTwist: 5,
+    MountianDew: 5
 };
 
 var loopCheck = function () {  //main loop
     APIService.IdentifyUser(function(result){
         console.log(result.body);
-        if(result.body.matchingUser !== null){
-            resolve(result.body.matchingUser);
+        if(result.body.userDetected){
+            resolve();
         } else {
             setTimeout(function () {
                 loopCheck();
@@ -23,9 +23,9 @@ var loopCheck = function () {  //main loop
     });
 
     function resolve(user) {
-        console.log('User Found: ')
+        console.log('User Found: ');
         console.log(user);
-        Speech.Conversation(Count, user, function (callback) {
+        Speech.Conversation(Count, function (callback) {
             console.log('Success = ' + callback);
             setTimeout(function () {
                 loopCheck();
@@ -60,7 +60,7 @@ var pepsi = function () {
     console.log('run pepsi');
     PinAccess.ActavatePepsiPin();
     setTimeout(function () {
-        dew();
+        pepsi();
     },5000);
 };
 
@@ -68,7 +68,7 @@ var mist = function () {
     console.log('run Mist');
     PinAccess.ActavateMistTwistPin();
     setTimeout(function () {
-        pepsi();
+        mist();
     },5000);
 };
 
@@ -76,10 +76,10 @@ var dew = function () {
     console.log('run Dew');
     PinAccess.ActavateMountianDewPin();
     setTimeout(function () {
-        mist();
+        dew();
     },5000);
 };
-//pepsi();
+//mist();
 
 // above is a pin demo //
 

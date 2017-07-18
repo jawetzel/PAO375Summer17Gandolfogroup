@@ -5,13 +5,13 @@ var uuid = require('node-uuid'),
 var superagent = require('superagent');
 var PinInteraction = require('../GpioPins/PinInteraction');
 var Sound = require('node-aplay'); //sudo apt-get install alsa-base alsa-utils
-var APIService = require('./ApiCalls/AccessiVendApiCalls');
+var APIService = require('../ApiCalls/AccessiVendApiCalls');
 
 var SpeechToTextEndpoint = 'https://speech.platform.bing.com/speech/recognition/interactive/cognitiveservices/v1?language=en-US';
 var Key = '248162ed0e48475aa055127f1fda4e76';
 var AccessToken = '';
 
-var Conversation = function (count, matchingUser, callback) {
+var Conversation = function (count, callback) {
     BeginConversation(count, function (intent) {
         console.log(intent);
         switch(intent){
@@ -22,7 +22,6 @@ var Conversation = function (count, matchingUser, callback) {
             case 'Pepsi': {
                 var exitAudio = new Sound('End.wav');
                 exitAudio.play();
-                ChargeCustomer('Pepsi');
                 console.log('hit pepsi');
                 count.Pepsi--;
                 PinInteraction.ActavatePepsiPin();
@@ -32,7 +31,6 @@ var Conversation = function (count, matchingUser, callback) {
             case 'MistTwist': {
                 var exitAudio = new Sound('End.wav');
                 exitAudio.play();
-                ChargeCustomer('MistTwist');
                 console.log('hit mist twist');
                 count.MistTwist--;
                 PinInteraction.ActavateMistTwistPin();
@@ -42,7 +40,6 @@ var Conversation = function (count, matchingUser, callback) {
             case 'MountianDew': {
                 var exitAudio = new Sound('End.wav');
                 exitAudio.play();
-                ChargeCustomer('MountainDew');
                 console.log('hit mountian dew');
                 count.MountianDew--;
                 PinInteraction.ActavateMountianDewPin();
@@ -63,14 +60,7 @@ var Conversation = function (count, matchingUser, callback) {
         }
     });
 
-    function ChargeCustomer(drinkType) {
-        APIService.ChargeCustomer({
-            Id: matchingUser.id,
-            DrinkType: drinkType
-        }, function (response) {
-            console.log(response.data);
-        });
-    }
+
 };
 
 var BeginConversation = function (count, callback) {

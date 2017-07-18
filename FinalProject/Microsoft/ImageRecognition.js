@@ -13,7 +13,6 @@ var camera = new Camera({
     timeout: 1
 });
 
-
 function GetEncodedImage(callback) {
     CaptureImage().then(function () {
         callback(EncodeImage().match(new RegExp('.{1,2000}', 'g')));
@@ -29,7 +28,7 @@ function CaptureImage() {
 }
 
 function EncodeImage() {
-    var imagePath = `Temp/image.jpg`;
+    var imagePath = 'Temp/image.jpg';
     var bitmap = fs.readFileSync(imagePath);
     var buffer = new Buffer(bitmap);
     var encodedImage = buffer.toString('base64');
